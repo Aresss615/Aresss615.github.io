@@ -8,7 +8,7 @@
   <meta name="author" content="John Chrisley Delos Santos" />
 
   <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="img/jc-logo.svg" />
 
   <!-- Google Fonts: Syne (display) + Inter (body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,7 +27,10 @@
        ============================================================ -->
   <header id="header" class="header">
     <nav class="nav">
-      <a href="#hero" class="nav__logo">jc<span class="accent">.dev</span></a>
+      <a href="#hero" class="nav__logo">
+        <img src="img/jc-logo.svg" alt="" class="nav__logo-mark" />
+        <span class="nav__logo-text">johnchrisley.dev</span>
+      </a>
 
       <ul class="nav__menu" id="navMenu">
         <li><a href="#about" class="nav__link"><span class="nav__number">01</span> About</a></li>
@@ -61,9 +64,9 @@
           Computer Engineering Student · Software &amp; IT-Focused Builder
         </p>
         <p class="hero__description" data-reveal>
-          I build practical software and systems that solve real problems.
-          3rd-year CpE student at MMSU with hands-on experience in
-          web development, IT infrastructure, and embedded systems.
+          I build practical software, web tools, and IT systems that solve
+          real problems. I'm a 3rd-year CpE student at MMSU looking for
+          opportunities to contribute, learn fast, and keep shipping useful work.
         </p>
         <div class="hero__actions" data-reveal>
           <a href="#projects" class="btn btn--primary">View Projects</a>
@@ -74,28 +77,40 @@
         </div>
       </div>
 
-      <!-- Right column: profile image -->
-      <div class="hero__image-wrapper" data-reveal>
-        <div class="hero__image-container">
-          <div class="hero__image-frame">
-            <!--
-              PROFILE IMAGE
-              ─────────────
-              Change the src below to match your image filename.
-              Your existing image is img/jc.png — either:
-              1) Rename jc.png to profile.jpg, or
-              2) Change src="img/profile.jpg" to src="img/jc.png"
-            -->
-            <img
-              src="img/profile.png"
-              alt="John Chrisley Delos Santos"
-              class="hero__image"
-              loading="eager"
-            />
+      <!-- Right column: career snapshot -->
+      <aside class="hero__panel" data-reveal aria-label="Career snapshot">
+        <div class="hero-card">
+          <p class="hero-card__eyebrow">Career Snapshot</p>
+          <h2 class="hero-card__title">
+            Building dependable software and IT systems that feel useful from day one.
+          </h2>
+          <p class="hero-card__text">
+            I enjoy projects that combine problem-solving, clean execution, and practical value,
+            whether that means a web app, an internal tool, or hands-on technical support.
+          </p>
+          <div class="hero-card__meta">
+            <span>Open to internships</span>
+            <span>BS Computer Engineering</span>
+            <span>Ilocos Norte, PH</span>
           </div>
-          <div class="hero__image-accent" aria-hidden="true"></div>
         </div>
-      </div>
+
+        <div class="hero__panel-grid">
+          <div class="hero-mini">
+            <span class="hero-mini__label">Current Focus</span>
+            <p>
+              Backend fundamentals, real-world web systems, and stronger IT troubleshooting depth.
+            </p>
+          </div>
+
+          <div class="hero-mini">
+            <span class="hero-mini__label">How I Work</span>
+            <p>
+              Clean structure, simple interfaces, and practical work that earns its place by being useful.
+            </p>
+          </div>
+        </div>
+      </aside>
 
     </div>
 
@@ -119,8 +134,8 @@
       <div class="about__layout">
         <div class="about__statement" data-reveal>
           <p class="about__big-text">
-            I'm a builder who happens to be studying
-            <span class="accent">Computer Engineering.</span>
+            I'm drawn to work that sits between
+            <span class="accent">software, systems, and real-world problem solving.</span>
           </p>
         </div>
         <div class="about__details" data-reveal>
@@ -138,8 +153,9 @@
             users — not just for class requirements.
           </p>
           <p>
-            Currently seeking internship opportunities where I can contribute
-            meaningfully and continue growing as a developer and engineer.
+            I'm currently looking for internship opportunities where I can
+            contribute to real projects, sharpen my engineering judgment, and
+            keep building useful things.
           </p>
         </div>
       </div>
@@ -514,7 +530,10 @@
   <footer class="footer">
     <div class="container footer__inner">
       <p class="footer__copy">&copy; 2026 John Chrisley Delos Santos</p>
-      <p class="footer__domain">johnchrisley.dev</p>
+      <div class="footer__brand">
+        <img src="img/jc-logo.svg" alt="" class="footer__logo" />
+        <p class="footer__domain">johnchrisley.dev</p>
+      </div>
     </div>
   </footer>
 
