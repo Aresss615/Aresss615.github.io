@@ -149,7 +149,22 @@ document.addEventListener('DOMContentLoaded', () => {
   revealElements.forEach(el => revealObserver.observe(el));
 
   /* -------------------------------------------------------
-     7. SUBTLE TILT EFFECT ON PROJECT CARDS
+     7. MASTHEAD CLOCK (Manila time)
+     ------------------------------------------------------- */
+  const clockEl = document.getElementById('clock');
+  if (clockEl) {
+    const tickClock = () => {
+      const now = new Date();
+      const opts = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Manila' };
+      const time = new Intl.DateTimeFormat('en-GB', opts).format(now);
+      clockEl.textContent = `◷ ${time} PHT`;
+    };
+    tickClock();
+    setInterval(tickClock, 30000);
+  }
+
+  /* -------------------------------------------------------
+     8. SUBTLE TILT EFFECT ON PROJECT CARDS
      — Gives a slight 3D perspective tilt on mouse movement
        over cards with [data-tilt]. Respects prefers-reduced-motion.
      ------------------------------------------------------- */

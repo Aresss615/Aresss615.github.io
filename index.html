@@ -7,17 +7,19 @@
   <meta name="description" content="Portfolio of John Chrisley Delos Santos — Computer Engineering student building practical software, web applications, and IT solutions." />
   <meta name="author" content="John Chrisley Delos Santos" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="img/jc-logo.svg" />
 
-  <!-- Google Fonts: Syne (display) + Inter (body) -->
+  <!-- Fraunces (display serif, variable) + Instrument Serif (italic flourish) + JetBrains Mono (UI/labels) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300..600;1,14..32,300..400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Paper grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
 
   <!-- Scroll Progress Bar -->
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -28,17 +30,20 @@
   <header id="header" class="header">
     <nav class="nav">
       <a href="#hero" class="nav__logo">
-        <img src="img/jc-logo.svg" alt="" class="nav__logo-mark" />
-        <span class="nav__logo-text">johnchrisley.dev</span>
+        <span class="nav__logo-mark" aria-hidden="true">✦</span>
+        <span class="nav__logo-text">
+          <em>John Chrisley</em>
+          <span class="nav__logo-sub">est. MMXXVI · portfolio №01</span>
+        </span>
       </a>
 
       <ul class="nav__menu" id="navMenu">
-        <li><a href="#about" class="nav__link"><span class="nav__number">01</span> About</a></li>
-        <li><a href="#skills" class="nav__link"><span class="nav__number">02</span> Skills</a></li>
-        <li><a href="#experience" class="nav__link"><span class="nav__number">03</span> Experience</a></li>
-        <li><a href="#projects" class="nav__link"><span class="nav__number">04</span> Projects</a></li>
-        <li><a href="#education" class="nav__link"><span class="nav__number">05</span> Education</a></li>
-        <li><a href="#contact" class="nav__link"><span class="nav__number">06</span> Contact</a></li>
+        <li><a href="#about" class="nav__link"><span class="nav__number">i.</span> About</a></li>
+        <li><a href="#skills" class="nav__link"><span class="nav__number">ii.</span> Craft</a></li>
+        <li><a href="#experience" class="nav__link"><span class="nav__number">iii.</span> Work</a></li>
+        <li><a href="#projects" class="nav__link"><span class="nav__number">iv.</span> Selected</a></li>
+        <li><a href="#education" class="nav__link"><span class="nav__number">v.</span> Studies</a></li>
+        <li><a href="#contact" class="nav__link nav__link--cta"><span class="nav__number">vi.</span> Say hello →</a></li>
       </ul>
 
       <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
@@ -48,76 +53,119 @@
   </header>
 
   <!-- ============================================================
-       HERO SECTION
+       HERO
        ============================================================ -->
   <section id="hero" class="hero">
+
+    <!-- top meta strip -->
+    <div class="hero__strip" aria-hidden="true">
+      <span>◆ Issue No. 01</span>
+      <span>—</span>
+      <span>Volume MMXXVI</span>
+      <span>—</span>
+      <span>Ilocos Norte · 18° 03′ N, 120° 34′ E</span>
+      <span class="hero__strip-spacer"></span>
+      <span id="clock" class="hero__clock">—</span>
+    </div>
+
     <div class="hero__inner">
 
-      <!-- Left column: text -->
       <div class="hero__text">
-        <p class="hero__label" data-reveal>Hello, I'm</p>
+        <p class="hero__label" data-reveal>
+          <span class="dot"></span> Portfolio · 2026 Edition
+        </p>
+
         <h1 class="hero__name" data-reveal>
-          John Chrisley<br />
-          <span class="hero__name--outline">Delos Santos</span>
+          <span class="hero__name-line">John</span>
+          <span class="hero__name-line hero__name-line--italic"><em>Chrisley</em></span>
+          <span class="hero__name-line hero__name-line--outline">Delos&nbsp;Santos</span>
+          <svg class="hero__squiggle" viewBox="0 0 320 18" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M2 9 Q 22 1, 42 9 T 82 9 T 122 9 T 162 9 T 202 9 T 242 9 T 282 9 T 318 9"
+              fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
         </h1>
+
         <p class="hero__tagline" data-reveal>
-          Computer Engineering Student · Software &amp; IT-Focused Builder
+          <span class="hero__tag-mono">/* role */</span>
+          Computer Engineering student &amp; builder of practical software, web tools, and IT systems.
         </p>
+
         <p class="hero__description" data-reveal>
-          I build practical software, web tools, and IT systems that solve
-          real problems. I'm a 3rd-year CpE student at MMSU looking for
-          opportunities to contribute, learn fast, and keep shipping useful work.
+          Currently a 3rd-year CpE student at <strong>MMSU — Batac</strong>.
+          I make things that work on day one — and keep working on day one hundred.
+          Looking for an internship where I can ship real work and learn faster than I should.
         </p>
+
         <div class="hero__actions" data-reveal>
-          <a href="#projects" class="btn btn--primary">View Projects</a>
-          <a href="#contact" class="btn btn--outline">Contact Me</a>
-          <a href="https://roadmap.johnchrisley.dev" class="btn btn--outline" target="_blank" rel="noopener">Career Roadmap</a>
-          <!-- Update href to your actual resume PDF when ready -->
-          <a href="https://drive.google.com/uc?export=download&id=1K0SmSttcz0BwnOK9-gqVg9O5dzLa0S3p" class="btn btn--ghost">Download Resume ↓</a>
+          <a href="#projects" class="btn btn--primary">
+            <span>View Selected Work</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#contact" class="btn btn--outline">Get in touch</a>
+          <a href="https://roadmap.johnchrisley.dev" class="btn btn--ghost" target="_blank" rel="noopener">Career Roadmap ↗</a>
+          <a href="https://drive.google.com/uc?export=download&id=1K0SmSttcz0BwnOK9-gqVg9O5dzLa0S3p" class="btn btn--ghost">Resume ↓</a>
         </div>
       </div>
 
-      <!-- Right column: career snapshot -->
       <aside class="hero__panel" data-reveal aria-label="Career snapshot">
-        <div class="hero-card">
-          <p class="hero-card__eyebrow">Career Snapshot</p>
-          <h2 class="hero-card__title">
-            Building dependable software and IT systems that feel useful from day one.
+        <div class="postcard">
+          <div class="postcard__stamp">
+            <div class="postcard__stamp-inner">
+              <span>JC</span>
+              <small>MMXXVI</small>
+            </div>
+          </div>
+          <p class="postcard__eyebrow">— A short note —</p>
+          <h2 class="postcard__title">
+            Building dependable software <em>that earns its place</em> by being useful.
           </h2>
-          <p class="hero-card__text">
-            I enjoy projects that combine problem-solving, clean execution, and practical value,
-            whether that means a web app, an internal tool, or hands-on technical support.
+          <p class="postcard__text">
+            I enjoy projects that combine problem-solving, clean execution, and practical value
+            — whether that's a web app, an internal tool, or hands-on technical support.
           </p>
-          <div class="hero-card__meta">
-            <span>Open to internships</span>
-            <span>BS Computer Engineering</span>
-            <span>Ilocos Norte, PH</span>
+          <div class="postcard__meta">
+            <span class="chip">✓ Open to internships</span>
+            <span class="chip">BS Computer Engineering</span>
+            <span class="chip">📍 Ilocos Norte, PH</span>
+          </div>
+          <div class="postcard__sign">
+            <span class="postcard__sig">— J. C.</span>
+            <span class="postcard__date">Class of '27</span>
           </div>
         </div>
 
         <div class="hero__panel-grid">
           <div class="hero-mini">
-            <span class="hero-mini__label">Current Focus</span>
-            <p>
-              Backend fundamentals, real-world web systems, and stronger IT troubleshooting depth.
-            </p>
+            <span class="hero-mini__num">01</span>
+            <span class="hero-mini__label">Currently</span>
+            <p>Backend fundamentals, real-world web systems, IT troubleshooting depth.</p>
           </div>
-
           <div class="hero-mini">
-            <span class="hero-mini__label">How I Work</span>
-            <p>
-              Clean structure, simple interfaces, and practical work that earns its place by being useful.
-            </p>
+            <span class="hero-mini__num">02</span>
+            <span class="hero-mini__label">Method</span>
+            <p>Clean structure. Simple interfaces. Work that earns its place by being useful.</p>
           </div>
         </div>
       </aside>
 
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="hero__scroll" data-reveal>
-      <span>Scroll</span>
-      <div class="hero__scroll-line"></div>
+    <!-- Marquee ticker -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>PHP</span><span>·</span><span>MySQL</span><span>·</span>
+        <span>JavaScript</span><span>·</span><span>Arduino</span><span>·</span>
+        <span>Verilog</span><span>·</span><span>Network Troubleshooting</span><span>·</span>
+        <span>Java</span><span>·</span><span>C / C++</span><span>·</span>
+        <span class="marquee__star">✦</span><span>·</span>
+        <span>Available for internships — Summer 2026</span><span>·</span>
+        <span>PHP</span><span>·</span><span>MySQL</span><span>·</span>
+        <span>JavaScript</span><span>·</span><span>Arduino</span><span>·</span>
+        <span>Verilog</span><span>·</span><span>Network Troubleshooting</span><span>·</span>
+        <span>Java</span><span>·</span><span>C / C++</span><span>·</span>
+        <span class="marquee__star">✦</span><span>·</span>
+        <span>Available for internships — Summer 2026</span><span>·</span>
+      </div>
     </div>
   </section>
 
@@ -127,22 +175,24 @@
   <section id="about" class="section">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">01</span>
-        <h2 class="section__title">About Me</h2>
+        <span class="section__number">Chapter i.</span>
+        <h2 class="section__title">A few words about me</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="about__layout">
         <div class="about__statement" data-reveal>
+          <span class="quote-mark" aria-hidden="true">“</span>
           <p class="about__big-text">
             I'm drawn to work that sits between
-            <span class="accent">software, systems, and real-world problem solving.</span>
+            <span class="accent"><em>software, systems, and real-world problem solving.</em></span>
           </p>
         </div>
         <div class="about__details" data-reveal>
-          <p>
-            Currently in my 3rd year of BS Computer Engineering at
+          <p class="about__dropcap">
+            <span class="dropcap">C</span>urrently in my 3rd year of BS Computer Engineering at
             <strong>Mariano Marcos State University — Batac Campus</strong> in
-            Ilocos Norte, Philippines. My interests span across
+            Ilocos Norte, Philippines. My interests run across
             <strong>software development</strong>, <strong>web development</strong>,
             practical IT systems, networking, and embedded electronics.
           </p>
@@ -153,75 +203,55 @@
             users — not just for class requirements.
           </p>
           <p>
-            I'm currently looking for internship opportunities where I can
+            Right now I'm looking for internship opportunities where I can
             contribute to real projects, sharpen my engineering judgment, and
             keep building useful things.
           </p>
         </div>
       </div>
 
-      <!-- Quick stats -->
       <div class="about__stats" data-reveal>
-        <div class="stat">
-          <span class="stat__number">3rd</span>
-          <span class="stat__label">Year CpE</span>
-        </div>
-        <div class="stat">
-          <span class="stat__number">3+</span>
-          <span class="stat__label">Projects Built</span>
-        </div>
-        <div class="stat">
-          <span class="stat__number">2</span>
-          <span class="stat__label">Work Roles</span>
-        </div>
-        <div class="stat">
-          <span class="stat__number">15+</span>
-          <span class="stat__label">Technologies</span>
-        </div>
+        <div class="stat"><span class="stat__number">3<sup>rd</sup></span><span class="stat__label">Year CpE</span></div>
+        <div class="stat__sep">×</div>
+        <div class="stat"><span class="stat__number">03</span><span class="stat__label">Projects Shipped</span></div>
+        <div class="stat__sep">×</div>
+        <div class="stat"><span class="stat__number">02</span><span class="stat__label">Work Roles</span></div>
+        <div class="stat__sep">×</div>
+        <div class="stat"><span class="stat__number">15<sup>+</sup></span><span class="stat__label">Technologies</span></div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
        02 — SKILLS
-       — Edit skill tags below to add or remove skills per category.
        ============================================================ -->
   <section id="skills" class="section section--alt">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">02</span>
-        <h2 class="section__title">Skills &amp; Tools</h2>
+        <span class="section__number">Chapter ii.</span>
+        <h2 class="section__title">The craft, the toolkit</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="skills__categories">
-        <!-- Programming -->
         <div class="skill-row" data-reveal>
-          <h3 class="skill-row__label">Programming</h3>
+          <h3 class="skill-row__label"><span class="skill-row__index">01</span> Programming</h3>
           <div class="skill-row__tags">
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">C++</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">SQL</span>
-            <span class="skill-tag">PHP</span>
+            <span class="skill-tag">C</span><span class="skill-tag">C++</span>
+            <span class="skill-tag">Java</span><span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">PHP</span>
           </div>
         </div>
-
-        <!-- Web Development -->
         <div class="skill-row" data-reveal>
-          <h3 class="skill-row__label">Web Development</h3>
+          <h3 class="skill-row__label"><span class="skill-row__index">02</span> Web Development</h3>
           <div class="skill-row__tags">
-            <span class="skill-tag">HTML</span>
-            <span class="skill-tag">CSS</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">PHP</span>
+            <span class="skill-tag">HTML</span><span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span><span class="skill-tag">PHP</span>
             <span class="skill-tag">MySQL</span>
           </div>
         </div>
-
-        <!-- Networking & IT -->
         <div class="skill-row" data-reveal>
-          <h3 class="skill-row__label">Networking &amp; IT</h3>
+          <h3 class="skill-row__label"><span class="skill-row__index">03</span> Networking &amp; IT</h3>
           <div class="skill-row__tags">
             <span class="skill-tag">TCP/IP</span>
             <span class="skill-tag">Network Troubleshooting</span>
@@ -229,25 +259,19 @@
             <span class="skill-tag">LAN Infrastructure</span>
           </div>
         </div>
-
-        <!-- Embedded Systems -->
         <div class="skill-row" data-reveal>
-          <h3 class="skill-row__label">Embedded Systems</h3>
+          <h3 class="skill-row__label"><span class="skill-row__index">04</span> Embedded</h3>
           <div class="skill-row__tags">
-            <span class="skill-tag">Arduino Programming</span>
+            <span class="skill-tag">Arduino</span>
             <span class="skill-tag">Digital Logic Circuits</span>
             <span class="skill-tag">Verilog (Xilinx)</span>
           </div>
         </div>
-
-        <!-- Tools -->
         <div class="skill-row" data-reveal>
-          <h3 class="skill-row__label">Tools</h3>
+          <h3 class="skill-row__label"><span class="skill-row__index">05</span> Tools</h3>
           <div class="skill-row__tags">
-            <span class="skill-tag">GitHub</span>
-            <span class="skill-tag">Visual Studio Code</span>
-            <span class="skill-tag">AutoCAD</span>
-            <span class="skill-tag">Xilinx</span>
+            <span class="skill-tag">GitHub</span><span class="skill-tag">VS Code</span>
+            <span class="skill-tag">AutoCAD</span><span class="skill-tag">Xilinx</span>
           </div>
         </div>
       </div>
@@ -260,33 +284,38 @@
   <section id="experience" class="section">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">03</span>
-        <h2 class="section__title">Experience</h2>
+        <span class="section__number">Chapter iii.</span>
+        <h2 class="section__title">Work, on the ground</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="timeline">
-        <!-- Experience 1 -->
         <div class="timeline__item" data-reveal>
-          <div class="timeline__marker"></div>
+          <div class="timeline__marker"><span>◆</span></div>
           <div class="timeline__content">
-            <span class="timeline__date">Nov 2022 — Present</span>
+            <div class="timeline__head">
+              <span class="timeline__date">Nov 2022 — Present</span>
+              <span class="timeline__pill">Current</span>
+            </div>
             <h3 class="timeline__role">Technical Support / System Development</h3>
-            <p class="timeline__company">J &amp; J Grocery — Solsona, Ilocos Norte</p>
+            <p class="timeline__company">J &amp; J Grocery <span>·</span> Solsona, Ilocos Norte</p>
             <ul class="timeline__list">
               <li>Provided basic IT support for day-to-day store operations</li>
               <li>Troubleshot computers and network connectivity issues</li>
-              <li>Helped maintain store hardware including POS terminals, printers, and networking equipment</li>
+              <li>Maintained store hardware — POS terminals, printers, and networking equipment</li>
             </ul>
           </div>
         </div>
 
-        <!-- Experience 2 -->
         <div class="timeline__item" data-reveal>
-          <div class="timeline__marker"></div>
+          <div class="timeline__marker"><span>◇</span></div>
           <div class="timeline__content">
-            <span class="timeline__date">Feb 2023 — Mar 2023</span>
+            <div class="timeline__head">
+              <span class="timeline__date">Feb 2023 — Mar 2023</span>
+              <span class="timeline__pill timeline__pill--past">OJT</span>
+            </div>
             <h3 class="timeline__role">IT Intern / OJT Trainee</h3>
-            <p class="timeline__company">LGU Solsona — Ilocos Norte</p>
+            <p class="timeline__company">LGU Solsona <span>·</span> Ilocos Norte</p>
             <ul class="timeline__list">
               <li>Assisted in managing municipal databases using SQL</li>
               <li>Performed LAN cable crimping and testing</li>
@@ -301,48 +330,44 @@
 
   <!-- ============================================================
        04 — PROJECTS
-       — Duplicate a .project-card block to add more projects.
-       — The first card has .project-card--featured for emphasis.
        ============================================================ -->
   <section id="projects" class="section section--alt">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">04</span>
-        <h2 class="section__title">Projects</h2>
+        <span class="section__number">Chapter iv.</span>
+        <h2 class="section__title">Selected projects</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="projects__grid">
 
-        <!-- PROJECT 1 — Featured (spans full width) -->
-        <article class="project-card project-card--featured" data-reveal data-tilt>
+        <article class="project-card project-card--featured" data-reveal>
+          <div class="project-card__corner"></div>
           <span class="project-card__number" aria-hidden="true">01</span>
           <div class="project-card__body">
+            <span class="project-card__kicker">Featured · Web System</span>
             <h3 class="project-card__title">Inventory &amp; Sales Management System</h3>
             <p class="project-card__desc">
               A web-based system for managing product inventory and sales
-              transactions. Handles product information, transaction records,
+              transactions. Handles product info, transaction records,
               stock monitoring, and real-time sales tracking for small businesses.
             </p>
             <div class="project-card__stack">
-              <span>PHP</span>
-              <span>CSS</span>
-              <span>JavaScript</span>
-              <span>MySQL</span>
+              <span>PHP</span><span>CSS</span><span>JavaScript</span><span>MySQL</span>
             </div>
             <div class="project-card__links">
               <a href="https://github.com/Aresss615/Inventory-and-Sales-Management-System"
-                 class="btn btn--small btn--primary"
-                 target="_blank" rel="noopener">
-                View on GitHub →
+                 class="btn btn--small btn--primary" target="_blank" rel="noopener">
+                Read the code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
               </a>
             </div>
           </div>
         </article>
 
-        <!-- PROJECT 2 -->
-        <article class="project-card" data-reveal data-tilt>
+        <article class="project-card" data-reveal>
           <span class="project-card__number" aria-hidden="true">02</span>
           <div class="project-card__body">
+            <span class="project-card__kicker">Web System</span>
             <h3 class="project-card__title">Library Borrowing System</h3>
             <p class="project-card__desc">
               A library management system for borrowing and returning books.
@@ -350,42 +375,33 @@
               inventory tracking with a clean interface.
             </p>
             <div class="project-card__stack">
-              <!-- Update these if the actual stack differs -->
-              <span>PHP</span>
-              <span>MySQL</span>
-              <span>HTML</span>
-              <span>CSS</span>
+              <span>PHP</span><span>MySQL</span><span>HTML</span><span>CSS</span>
             </div>
             <div class="project-card__links">
               <a href="https://github.com/Aresss615/Library-Borrowing-System"
-                 class="btn btn--small btn--primary"
-                 target="_blank" rel="noopener">
-                View on GitHub →
+                 class="btn btn--small btn--primary" target="_blank" rel="noopener">
+                Read the code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
               </a>
             </div>
           </div>
         </article>
 
-        <!-- PROJECT 3 — Portfolio / Placeholder -->
-        <article class="project-card" data-reveal data-tilt>
+        <article class="project-card" data-reveal>
           <span class="project-card__number" aria-hidden="true">03</span>
           <div class="project-card__body">
-            <h3 class="project-card__title">Portfolio Website</h3>
+            <span class="project-card__kicker">This Website</span>
+            <h3 class="project-card__title">Portfolio, hand-typeset</h3>
             <p class="project-card__desc">
-              A personal portfolio website built to present projects, technical
-              skills, and contact information. Designed with a distinct visual
-              identity and responsive layout for internship applications.
+              The site you're on. Built to read like a small printed journal —
+              opinionated typography, asymmetric layout, no template.
             </p>
             <div class="project-card__stack">
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>JavaScript</span>
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
             </div>
             <div class="project-card__links">
               <a href="https://github.com/Aresss615"
-                 class="btn btn--small btn--primary"
-                 target="_blank" rel="noopener">
-                View on GitHub →
+                 class="btn btn--small btn--primary" target="_blank" rel="noopener">
+                Read the code <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
               </a>
             </div>
           </div>
@@ -394,9 +410,8 @@
       </div>
 
       <p class="projects__note" data-reveal>
-        More projects in progress — check my
-        <a href="https://github.com/Aresss615" target="_blank" rel="noopener">GitHub</a>
-        for the latest.
+        More in progress — see the latest on
+        <a href="https://github.com/Aresss615" target="_blank" rel="noopener">GitHub →</a>
       </p>
     </div>
   </section>
@@ -407,27 +422,26 @@
   <section id="education" class="section">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">05</span>
-        <h2 class="section__title">Education</h2>
+        <span class="section__number">Chapter v.</span>
+        <h2 class="section__title">Where I've studied</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="education__grid">
-        <!-- College -->
         <div class="education__card" data-reveal>
           <div class="education__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-              <path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/>
             </svg>
           </div>
           <div class="education__info">
+            <span class="education__period">2023 — Present</span>
             <h3 class="education__degree">BS in Computer Engineering</h3>
             <p class="education__school">Mariano Marcos State University — Batac Campus</p>
-            <p class="education__meta">Sep 2023 — Present · Ilocos Norte, Philippines</p>
+            <p class="education__meta">Ilocos Norte, Philippines</p>
           </div>
         </div>
 
-        <!-- High School -->
         <div class="education__card" data-reveal>
           <div class="education__icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -435,9 +449,10 @@
             </svg>
           </div>
           <div class="education__info">
+            <span class="education__period">2017 — 2023</span>
             <h3 class="education__degree">Senior High School — STEM</h3>
             <p class="education__school">Solsona National High School</p>
-            <p class="education__meta">June 2017 — July 2023</p>
+            <p class="education__meta">Solsona, Ilocos Norte</p>
           </div>
         </div>
       </div>
@@ -447,41 +462,45 @@
   <!-- ============================================================
        06 — CONTACT
        ============================================================ -->
-  <section id="contact" class="section section--alt">
+  <section id="contact" class="section section--contact">
     <div class="container">
       <div class="section__header" data-reveal>
-        <span class="section__number">06</span>
-        <h2 class="section__title">Contact</h2>
+        <span class="section__number">Chapter vi.</span>
+        <h2 class="section__title">Let's talk</h2>
+        <span class="section__rule"></span>
       </div>
 
       <div class="contact__layout">
         <div class="contact__cta" data-reveal>
           <p class="contact__big-text">
-            Have an internship opportunity<br />
-            or want to collaborate?
+            Have an internship<br/>
+            <em>or want to build something</em><br/>
+            together?
           </p>
           <p class="contact__sub">
-            I'm open to internship roles, freelance projects, and conversations
-            about software, web development, and IT. Don't hesitate to reach out.
+            Open to internship roles, freelance projects, and conversations
+            about software, web development, and IT. The inbox is always open.
           </p>
+          <div class="contact__signature">
+            <span>—</span> J. C. Delos Santos, in Ilocos Norte
+          </div>
         </div>
 
         <div class="contact__links" data-reveal>
-          <!-- Email -->
-            <a href="mailto:johnchrisley4@gmail.com" class="contact__item" target="_blank" rel="noopener">
+          <a href="mailto:johnchrisley4@gmail.com" class="contact__item" target="_blank" rel="noopener">
             <div class="contact__item-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
               </svg>
             </div>
             <div class="contact__item-info">
-              <span class="contact__item-label">Email</span>
+              <span class="contact__item-label">Email · preferred</span>
               <span class="contact__item-value">johnchrisley4@gmail.com</span>
             </div>
-            </a>
+            <span class="contact__arrow">↗</span>
+          </a>
 
-          <!-- Phone -->
           <a href="tel:+639478938873" class="contact__item">
             <div class="contact__item-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -490,11 +509,11 @@
             </div>
             <div class="contact__item-info">
               <span class="contact__item-label">Phone</span>
-              <span class="contact__item-value">0947 893 8873</span>
+              <span class="contact__item-value">+63 947 893 8873</span>
             </div>
+            <span class="contact__arrow">↗</span>
           </a>
 
-          <!-- GitHub -->
           <a href="https://github.com/Aresss615" class="contact__item" target="_blank" rel="noopener">
             <div class="contact__item-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
@@ -503,11 +522,11 @@
             </div>
             <div class="contact__item-info">
               <span class="contact__item-label">GitHub</span>
-              <span class="contact__item-value">Aresss615</span>
+              <span class="contact__item-value">@Aresss615</span>
             </div>
+            <span class="contact__arrow">↗</span>
           </a>
 
-          <!-- LinkedIn -->
           <a href="https://www.linkedin.com/in/johnchrisley" class="contact__item" target="_blank" rel="noopener">
             <div class="contact__item-icon">
               <svg viewBox="0 0 24 24" fill="currentColor">
@@ -516,8 +535,9 @@
             </div>
             <div class="contact__item-info">
               <span class="contact__item-label">LinkedIn</span>
-              <span class="contact__item-value">johnchrisley</span>
+              <span class="contact__item-value">in/johnchrisley</span>
             </div>
+            <span class="contact__arrow">↗</span>
           </a>
         </div>
       </div>
@@ -529,19 +549,26 @@
        ============================================================ -->
   <footer class="footer">
     <div class="container footer__inner">
-      <p class="footer__copy">&copy; 2026 John Chrisley Delos Santos</p>
-      <div class="footer__brand">
-        <img src="img/jc-logo.svg" alt="" class="footer__logo" />
-        <p class="footer__domain">johnchrisley.dev</p>
+      <div class="footer__col">
+        <p class="footer__big">johnchrisley<em>.dev</em></p>
+        <p class="footer__sub">Hand-built. No templates.</p>
+      </div>
+      <div class="footer__col footer__col--center">
+        <span class="footer__divider">✦</span>
+      </div>
+      <div class="footer__col footer__col--right">
+        <p class="footer__copy">© MMXXVI &nbsp; John Chrisley Delos Santos</p>
+        <p class="footer__colophon">Set in Fraunces &amp; JetBrains Mono · printed on screen in Ilocos Norte</p>
       </div>
     </div>
   </footer>
 
   <!-- Scroll to Top -->
   <button id="scrollTopBtn" class="scroll-top" aria-label="Scroll to top">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"/>
     </svg>
+    <span>Top</span>
   </button>
 
   <script src="script.js"></script>
