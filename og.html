@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0B0D11; font-family: 'Space Grotesk', sans-serif; }
+  .card {
+    position: relative; width: 1200px; height: 630px; padding: 72px 80px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: #ECEEF2;
+    background:
+      radial-gradient(60% 70% at 88% 0%, rgba(255,176,46,0.14), transparent 60%),
+      linear-gradient(to right, #232A33 1px, transparent 1px) 0 0/72px 72px,
+      linear-gradient(to bottom, #232A33 1px, transparent 1px) 0 0/72px 72px,
+      #0B0D11;
+  }
+  .top { display: flex; align-items: center; gap: 14px; }
+  .mark { width: 40px; height: 40px; }
+  .brand { font-size: 22px; font-weight: 600; }
+  .brand span { color: #6C7682; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 19px; letter-spacing: 0.12em; text-transform: uppercase; color: #FFB02E; display:flex; align-items:center; gap: 14px; }
+  .eyebrow::before { content:''; width: 40px; height: 2px; background: #FFB02E; }
+  h1 { font-size: 78px; font-weight: 600; line-height: 1.0; letter-spacing: -0.03em; margin: 22px 0 0; max-width: 14ch; }
+  h1 em { color: #FFB02E; font-style: normal; }
+  .foot { display: flex; align-items: flex-end; justify-content: space-between; }
+  .name { font-size: 30px; font-weight: 600; }
+  .meta { font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #A6AEBA; text-align: right; line-height: 1.7; }
+  .meta b { color: #ECEEF2; font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <svg class="mark" viewBox="0 0 24 24" fill="none">
+        <rect x="1.5" y="1.5" width="21" height="21" rx="6" stroke="#FFB02E" stroke-width="1.2"/>
+        <path d="M15.5 6.5v6.2c0 2.3-1.5 3.6-3.7 3.6-1 0-1.9-.25-2.6-.7" stroke="#FFB02E" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M17 7.2A5.6 5.6 0 0 0 13.4 6 5.6 5.6 0 1 0 17 16" stroke="#FFB02E" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+      </svg>
+      <span class="brand">John&nbsp;Chrisley<span>.dev</span></span>
+    </div>
+
+    <div>
+      <div class="eyebrow">Computer Engineer · Full-stack &amp; Systems</div>
+      <h1>I build software that ships — from the database to the <em>device.</em></h1>
+    </div>
+
+    <div class="foot">
+      <span class="name">John Chrisley Delos Santos</span>
+      <div class="meta">
+        <b>PHP · Java · TypeScript</b><br/>
+        Production systems · Hardware + Software
+      </div>
+    </div>
+  </div>
+</body>
+</html>

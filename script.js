@@ -1,242 +1,148 @@
 /* ================================================================
-   SCRIPT.JS — Portfolio of John Chrisley Delos Santos
-
-   Handles:
-   1. Scroll progress bar
-   2. Mobile navigation (toggle, overlay, link close)
-   3. Active nav link tracking on scroll
-   4. Sticky header state
-   5. Scroll-to-top button
-   6. Reveal-on-scroll animations (IntersectionObserver)
-   7. Subtle tilt effect on project cards
+   SIGNALS — interactions for John Chrisley's portfolio
+   Vanilla JS, no dependencies. Everything is feature-detected and
+   reduced-motion aware. Modules:
+     1. reveal        — scroll-triggered entrances (IntersectionObserver)
+     2. activeSection — header + rail active state
+     3. railProgress  — scroll-linked progress on the left rail
+     4. header        — scrolled state
+     5. mobileMenu    — open/close
+     6. magnetic      — pointer-following buttons (desktop only)
    ================================================================ */
+(() => {
+  'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
-  
-  /* -------------------------------------------------------
-     ELEMENT REFERENCES
-     ------------------------------------------------------- */
-  const header        = document.getElementById('header');
-  const navToggle     = document.getElementById('navToggle');
-  const navMenu       = document.getElementById('navMenu');
-  const navLinks      = document.querySelectorAll('.nav__link');
-  const scrollTopBtn  = document.getElementById('scrollTopBtn');
-  const scrollProgress = document.getElementById('scrollProgress');
-  const sections      = document.querySelectorAll('.section, .hero');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer  = window.matchMedia('(pointer: fine)').matches;
 
-  /* Create mobile overlay element */
-  const overlay = document.createElement('div');
-  overlay.classList.add('nav__overlay');
-  document.body.appendChild(overlay);
-
-  /* -------------------------------------------------------
-     1. SCROLL PROGRESS BAR
-     — Shows a thin accent-colored bar at the very top of
-       the page indicating how far the user has scrolled.
-     ------------------------------------------------------- */
-  function updateScrollProgress() {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const progress = (scrollTop / scrollHeight) * 100;
-    scrollProgress.style.width = progress + '%';
-  }
-
-  /* -------------------------------------------------------
-     2. MOBILE NAVIGATION
-     ------------------------------------------------------- */
-  function openMenu() {
-    navToggle.classList.add('open');
-    navMenu.classList.add('open');
-    overlay.classList.add('visible');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    navToggle.classList.remove('open');
-    navMenu.classList.remove('open');
-    overlay.classList.remove('visible');
-    document.body.style.overflow = '';
-  }
-
-  navToggle.addEventListener('click', () => {
-    if (navMenu.classList.contains('open')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
-
-  overlay.addEventListener('click', closeMenu);
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  /* -------------------------------------------------------
-     3. ACTIVE NAV LINK ON SCROLL
-     — Highlights the nav link for the section currently
-       in the viewport.
-     ------------------------------------------------------- */
-  function updateActiveLink() {
-    const scrollY = window.scrollY + 250;
-
-    sections.forEach(section => {
-      const sectionTop    = section.offsetTop;
-      const sectionHeight = section.offsetHeight;
-      const sectionId     = section.getAttribute('id');
-
-      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-        navLinks.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-  }
-
-  /* -------------------------------------------------------
-     4. HEADER SCROLL STATE
-     — Adds a class to the header when scrolled, enabling
-       a border + shadow via CSS.
-     ------------------------------------------------------- */
-  function updateHeaderState() {
-    if (window.scrollY > 60) {
-      header.classList.add('header--scrolled');
-    } else {
-      header.classList.remove('header--scrolled');
-    }
-  }
-
-  /* -------------------------------------------------------
-     5. SCROLL-TO-TOP BUTTON
-     ------------------------------------------------------- */
-  function updateScrollTopBtn() {
-    if (window.scrollY > 500) {
-      scrollTopBtn.classList.add('visible');
-    } else {
-      scrollTopBtn.classList.remove('visible');
-    }
-  }
-
-  scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  /* -------------------------------------------------------
-     6. REVEAL ON SCROLL (IntersectionObserver)
-     — Elements with [data-reveal] animate in when they
-       enter the viewport. Each element only animates once.
-     ------------------------------------------------------- */
-  const revealElements = document.querySelectorAll('[data-reveal]');
-
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
+  /* ----------------------------------------------------------------
+     1 · REVEAL ON SCROLL
+     ---------------------------------------------------------------- */
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          revealObserver.unobserve(entry.target);
+          entry.target.classList.add('is-in');
+          obs.unobserve(entry.target);
         }
       });
-    },
-    {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    }
-  );
-
-  revealElements.forEach(el => revealObserver.observe(el));
-
-  /* -------------------------------------------------------
-     7. MASTHEAD CLOCK (Manila time)
-     ------------------------------------------------------- */
-  const clockEl = document.getElementById('clock');
-  if (clockEl) {
-    const tickClock = () => {
-      const now = new Date();
-      const opts = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Manila' };
-      const time = new Intl.DateTimeFormat('en-GB', opts).format(now);
-      clockEl.textContent = `◷ ${time} PHT`;
-    };
-    tickClock();
-    setInterval(tickClock, 30000);
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('is-in'));
   }
 
-  /* -------------------------------------------------------
-     8. SUBTLE TILT EFFECT ON PROJECT CARDS
-     — Gives a slight 3D perspective tilt on mouse movement
-       over cards with [data-tilt]. Respects prefers-reduced-motion.
-     ------------------------------------------------------- */
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ----------------------------------------------------------------
+     2 · ACTIVE SECTION (header links + rail)
+     ---------------------------------------------------------------- */
+  const sectionIds = ['hero', 'about', 'work', 'stack', 'experience', 'education', 'contact'];
+  const sections = sectionIds
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
 
-  if (!prefersReducedMotion) {
-    const tiltCards = document.querySelectorAll('[data-tilt]');
+  const headerLinks = document.querySelectorAll('.header__link');
+  const railLinks   = document.querySelectorAll('.rail__list a');
 
-    tiltCards.forEach(card => {
-      card.style.transition += ', transform 0.15s ease';
-      card.style.willChange = 'transform';
-
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = ((y - centerY) / centerY) * -3;
-        const rotateY = ((x - centerX) / centerX) * 3;
-
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
-      });
-    });
+  function setActive(id) {
+    const key = id === 'hero' ? 'top' : id;
+    headerLinks.forEach(a =>
+      a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
+    railLinks.forEach(a =>
+      a.classList.toggle('is-active', a.getAttribute('data-rail') === key));
   }
 
-  /* -------------------------------------------------------
-     SCROLL EVENT (combined handler)
-     — Runs all lightweight scroll-dependent functions.
-       Uses requestAnimationFrame for performance.
-     ------------------------------------------------------- */
+  if ('IntersectionObserver' in window && sections.length) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    sections.forEach(s => spy.observe(s));
+  }
+
+  /* ----------------------------------------------------------------
+     3 · RAIL PROGRESS + HEADER STATE (scroll, rAF-throttled)
+     ---------------------------------------------------------------- */
+  const header       = document.getElementById('header');
+  const rail         = document.getElementById('rail');
+  const railProgress = document.getElementById('railProgress');
   let ticking = false;
 
-  function onScroll() {
+  function onScrollFrame() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docH > 0 ? Math.min(scrollTop / docH, 1) : 0;
+
+    if (header) header.classList.toggle('header--scrolled', scrollTop > 40);
+
+    if (rail && railProgress) {
+      const track = rail.offsetHeight - 8;
+      railProgress.style.height = (progress * track) + 'px';
+    }
+    ticking = false;
+  }
+
+  function requestScroll() {
     if (!ticking) {
-      window.requestAnimationFrame(() => {
-        updateScrollProgress();
-        updateActiveLink();
-        updateHeaderState();
-        updateScrollTopBtn();
-        ticking = false;
-      });
+      window.requestAnimationFrame(onScrollFrame);
       ticking = true;
     }
   }
+  window.addEventListener('scroll', requestScroll, { passive: true });
+  window.addEventListener('resize', requestScroll, { passive: true });
+  onScrollFrame();
 
-  window.addEventListener('scroll', onScroll, { passive: true });
+  /* ----------------------------------------------------------------
+     4 · MOBILE MENU
+     ---------------------------------------------------------------- */
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-  /* Run once on load (in case user arrives mid-page) */
-  updateScrollProgress();
-  updateActiveLink();
-  updateHeaderState();
-  updateScrollTopBtn();
+  function closeMenu() {
+    if (!menuToggle || !mobileMenu) return;
+    menuToggle.classList.remove('is-open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    mobileMenu.classList.remove('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  function openMenu() {
+    menuToggle.classList.add('is-open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    mobileMenu.classList.add('is-open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
 
-  /* -------------------------------------------------------
-     SMOOTH ANCHOR LINKS
-     — Ensures all in-page anchor links scroll smoothly,
-       even if CSS scroll-behavior is not supported.
-     ------------------------------------------------------- */
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () =>
+      mobileMenu.classList.contains('is-open') ? closeMenu() : openMenu());
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    // close if resized up to desktop
+    window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
+      if (e.matches) closeMenu();
     });
-  });
+  }
 
-});
+  /* ----------------------------------------------------------------
+     5 · MAGNETIC BUTTONS (desktop, motion-on only)
+     ---------------------------------------------------------------- */
+  if (finePointer && !reduceMotion) {
+    const STRENGTH = 0.28;
+    const MAX = 9;
+    document.querySelectorAll('[data-magnetic]').forEach(el => {
+      el.style.transition = 'transform 0.25s cubic-bezier(0.22,1,0.36,1)';
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        let dx = (e.clientX - (r.left + r.width / 2)) * STRENGTH;
+        let dy = (e.clientY - (r.top + r.height / 2)) * STRENGTH;
+        dx = Math.max(-MAX, Math.min(MAX, dx));
+        dy = Math.max(-MAX, Math.min(MAX, dy));
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+      });
+      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+    });
+  }
+})();
