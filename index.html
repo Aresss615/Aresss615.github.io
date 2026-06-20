@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="style.css?v=motion3" />
+  <link rel="stylesheet" href="style.css?v=motion6" />
 
   <script type="application/ld+json">
   {
@@ -129,6 +129,16 @@
          ============================================================ -->
     <section class="hero" id="hero">
       <div class="hero__grid-bg" aria-hidden="true"></div>
+      <div class="hero__cinema" aria-hidden="true">
+        <span class="hero__frame hero__frame--tl"></span>
+        <span class="hero__frame hero__frame--tr"></span>
+        <span class="hero__frame hero__frame--bl"></span>
+        <span class="hero__frame hero__frame--br"></span>
+        <span class="hero__cinema-title">John&nbsp;Chrisley</span>
+        <span class="hero__signal mono">PRODUCTION SYSTEMS / DATABASE TO DEVICE</span>
+        <span class="hero__poster-line hero__poster-line--top"></span>
+        <span class="hero__poster-line hero__poster-line--bottom"></span>
+      </div>
       <div class="container hero__inner">
 
         <div class="hero__text">
@@ -176,47 +186,40 @@
           </ul>
         </div>
 
-        <aside class="hero__card" data-reveal aria-label="Profile">
-          <figure class="portrait">
+        <aside class="hero__card profile-dossier" data-reveal aria-label="Profile">
+          <div class="profile-dossier__hud">
+            <span class="mono profile-dossier__code">PROFILE / 01</span>
+            <span class="mono profile-dossier__status">Systems online</span>
+          </div>
+          <figure class="portrait profile-dossier__portrait">
             <span class="portrait__mark portrait__mark--tl" aria-hidden="true"></span>
             <span class="portrait__mark portrait__mark--tr" aria-hidden="true"></span>
             <span class="portrait__mark portrait__mark--bl" aria-hidden="true"></span>
             <span class="portrait__mark portrait__mark--br" aria-hidden="true"></span>
+            <span class="profile-dossier__side mono" aria-hidden="true">DATABASE → DEVICE</span>
             <picture>
               <source srcset="img/profile.webp" type="image/webp" />
               <img src="img/profile.jpg" width="1000" height="1333"
                    alt="Portrait of John Chrisley Delos Santos" loading="eager" decoding="async" />
             </picture>
           </figure>
-          <div class="title-block title-block--profile">
-            <div class="tb__row"><span class="tb__k">Name</span><span class="tb__v">J.C.E. Delos Santos</span></div>
-            <div class="tb__row"><span class="tb__k">Role</span><span class="tb__v">Computer Engineer</span></div>
-            <div class="tb__row"><span class="tb__k">Focus</span><span class="tb__v">Full-stack · Systems</span></div>
-            <div class="tb__row"><span class="tb__k">Based</span><span class="tb__v">Ilocos Norte, PH</span></div>
+          <div class="profile-dossier__panel">
+            <div class="title-block title-block--profile">
+              <div class="tb__row"><span class="tb__k">Name</span><span class="tb__v">J.C.E. Delos Santos</span></div>
+              <div class="tb__row"><span class="tb__k">Role</span><span class="tb__v">Computer Engineer</span></div>
+              <div class="tb__row"><span class="tb__k">Focus</span><span class="tb__v">Full-stack · Systems</span></div>
+              <div class="tb__row"><span class="tb__k">Based</span><span class="tb__v">Ilocos Norte, PH</span></div>
+            </div>
+            <div class="profile-dossier__metrics" aria-label="Profile highlights">
+              <span><strong>POS</strong><small>daily use</small></span>
+              <span><strong>Django</strong><small>MVT</small></span>
+              <span><strong>AI video</strong><small>pipeline</small></span>
+            </div>
           </div>
         </aside>
 
       </div>
-
-      <a href="#about" class="hero__scroll" aria-label="Scroll to content">
-        <span class="mono">scroll</span>
-        <span class="hero__scroll-line" aria-hidden="true"></span>
-      </a>
     </section>
-
-    <!-- ============================================================
-         MARQUEE — what I build
-         ============================================================ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <div class="marquee__group">
-          <span>Production systems</span><span>Point of sale</span><span>Django · MVT</span><span>AI video pipelines</span><span>PHP · MySQL</span><span>Python</span><span>TypeScript · React</span><span>Hardware to software</span>
-        </div>
-        <div class="marquee__group">
-          <span>Production systems</span><span>Point of sale</span><span>Django · MVT</span><span>AI video pipelines</span><span>PHP · MySQL</span><span>Python</span><span>TypeScript · React</span><span>Hardware to software</span>
-        </div>
-      </div>
-    </div>
 
     <!-- ============================================================
          01 · ABOUT / POSITIONING
@@ -540,28 +543,49 @@
         <header class="sec-head sec-head--title" data-reveal>
           <span class="sec-head__index mono">03 / Capabilities</span>
           <h2 class="sec-head__title">From the gate up,<br/>and the framework down.</h2>
+          <p class="sec-head__note">One engineer, four layers — read it top to bottom and you go from the application surface all the way down to the silicon.</p>
         </header>
 
-        <div class="stack__rows">
-          <div class="stack__row" data-reveal>
-            <div class="stack__label"><span class="mono stack__idx">S1</span><h3>Software</h3></div>
-            <ul class="chips chips--lg"><li>C</li><li>C++</li><li>Java</li><li>Python</li><li>JavaScript</li><li>TypeScript</li><li>PHP</li><li>SQL</li></ul>
-          </div>
-          <div class="stack__row" data-reveal>
-            <div class="stack__label"><span class="mono stack__idx">S2</span><h3>Web</h3></div>
-            <ul class="chips chips--lg"><li>HTML</li><li>CSS</li><li>Vanilla JS</li><li>React</li><li>PHP</li><li>Django</li><li>MySQL</li></ul>
-          </div>
-          <div class="stack__row" data-reveal>
-            <div class="stack__label"><span class="mono stack__idx">S3</span><h3>Systems &amp; Networking</h3></div>
-            <ul class="chips chips--lg"><li>TCP/IP</li><li>LAN infrastructure</li><li>Network troubleshooting</li><li>Data backup</li><li>Shell</li></ul>
-          </div>
-          <div class="stack__row stack__row--hw" data-reveal>
-            <div class="stack__label"><span class="mono stack__idx">S4</span><h3>Hardware &amp; Embedded</h3></div>
-            <div class="stack__hw-body">
-              <ul class="chips chips--lg"><li>Arduino</li><li>Digital logic design</li><li>Verilog (Xilinx)</li><li>AutoCAD</li></ul>
-              <p class="stack__hw-note mono">// the computer-engineering half — I can reason about the silicon, not just the SDK.</p>
+        <div class="strata" data-reveal>
+          <span class="strata__axis mono" aria-hidden="true">application</span>
+
+          <div class="layer layer--1" data-reveal>
+            <div class="layer__meta">
+              <span class="mono layer__idx">L1</span>
+              <h3 class="layer__name">Software</h3>
+              <p class="layer__note">The languages I actually think in — from systems C to typed front-ends.</p>
             </div>
+            <ul class="chips chips--lg layer__chips"><li>C</li><li>C++</li><li>Java</li><li>Python</li><li>JavaScript</li><li>TypeScript</li><li>PHP</li><li>SQL</li></ul>
           </div>
+
+          <div class="layer layer--2" data-reveal>
+            <div class="layer__meta">
+              <span class="mono layer__idx">L2</span>
+              <h3 class="layer__name">Web</h3>
+              <p class="layer__note">Full-stack delivery — server-rendered or SPA, whatever the job needs.</p>
+            </div>
+            <ul class="chips chips--lg layer__chips"><li>HTML</li><li>CSS</li><li>Vanilla JS</li><li>React</li><li>PHP</li><li>Django</li><li>MySQL</li></ul>
+          </div>
+
+          <div class="layer layer--3" data-reveal>
+            <div class="layer__meta">
+              <span class="mono layer__idx">L3</span>
+              <h3 class="layer__name">Systems &amp; Networking</h3>
+              <p class="layer__note">Keeping the wires and boxes the code runs on alive and talking.</p>
+            </div>
+            <ul class="chips chips--lg layer__chips"><li>TCP/IP</li><li>LAN infrastructure</li><li>Network troubleshooting</li><li>Data backup</li><li>Shell</li></ul>
+          </div>
+
+          <div class="layer layer--4" data-reveal>
+            <div class="layer__meta">
+              <span class="mono layer__idx">L4</span>
+              <h3 class="layer__name">Hardware &amp; Embedded</h3>
+              <p class="layer__note">The computer-engineering half — I reason about the silicon, not just the SDK.</p>
+            </div>
+            <ul class="chips chips--lg layer__chips"><li>Arduino</li><li>Digital logic design</li><li>Verilog (Xilinx)</li><li>AutoCAD</li></ul>
+          </div>
+
+          <span class="strata__axis strata__axis--bottom mono" aria-hidden="true">silicon</span>
         </div>
 
         <div class="tools" data-reveal>
@@ -643,13 +667,13 @@
           <span class="sec-head__rule" aria-hidden="true"></span>
         </header>
         <div class="edu">
-          <div class="edu__item" data-reveal>
+          <div class="edu__item">
             <span class="mono edu__period">2023 — Present</span>
             <h3 class="edu__degree">BS Computer Engineering</h3>
             <p class="edu__school">Mariano Marcos State University — Batac Campus</p>
             <p class="mono edu__meta">Ilocos Norte, Philippines · Class of 2027</p>
           </div>
-          <div class="edu__item" data-reveal>
+          <div class="edu__item">
             <span class="mono edu__period">2017 — 2023</span>
             <h3 class="edu__degree">Senior High School — STEM</h3>
             <p class="edu__school">Solsona National High School</p>
@@ -670,11 +694,12 @@
         <div class="contact__layout">
           <div class="contact__lead" data-reveal>
             <h2 class="contact__big">
-              Looking for an internship<br/>where I can <em>ship real work.</em>
+              Available for freelance —<br/>let's <em>ship something real.</em>
             </h2>
             <p class="contact__sub">
-              Open to internships and software / IT roles. The fastest way to reach
-              me is email — I read everything and reply.
+              I take on freelance and contract builds — production web apps, POS and
+              booking systems, and automation. Open to select full-time roles too.
+              Fastest way to reach me is email; I read everything and reply.
             </p>
             <div class="contact__sign mono">— J. C. Delos Santos · Ilocos Norte, PH</div>
           </div>
@@ -742,9 +767,6 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
     integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"
-    integrity="sha384-O55L/6rhHr9CFvrxqv5luxOCcmVaBmETbZbJDP+Do8T0pztTACsFBD/IXCNkj7DV"
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="motion.js?v=motion3"></script>
+  <script defer src="motion.js?v=motion6"></script>
 </body>
 </html>
