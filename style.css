@@ -1142,16 +1142,11 @@ html.gsap-on .hero__text {
 }
 html.gsap-on.hero-ready .hero__text { opacity: 1; transform: none; }
 
-/* --- 8 · WORK: sticky-stacking case studies (desktop) --- */
+/* --- 8 · WORK: case studies flow normally so every card + its CTA is
+       fully scrollable (no sticky stacking — it hid the lower content). --- */
 @media (min-width: 861px) {
-  .cases { gap: clamp(3rem, 9vh, 6.5rem); overflow: visible; }
-  .case {
-    position: sticky; top: 5.5rem;
-    transform-origin: 50% 0%;
-    box-shadow: 0 28px 60px -48px rgba(22, 19, 14, 0.4);
-  }
-  .case:nth-child(2) { top: 6.9rem; }
-  .case:nth-child(3) { top: 8.3rem; }
+  .cases { gap: clamp(2.5rem, 5vw, 4rem); }
+  .case { box-shadow: 0 24px 56px -50px rgba(22, 19, 14, 0.4); }
 }
 
 /* --- 9 · EXPERIENCE timeline spine --- */
