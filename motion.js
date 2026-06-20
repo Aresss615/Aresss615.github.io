@@ -86,9 +86,9 @@
   /* ----------------------------------------------------------------
      2 · HERO SCROLL — scroll-assembled parallax
         One scrubbed timeline over the hero's own height. The giant
-        ghost title drifts up and dissolves; the content and portrait
-        ease away at different rates so the screen feels like it is
-        being pulled apart as you scroll into the page.
+        ghost title drifts up and dissolves while the content eases
+        away, so the screen feels like it is being pulled apart as you
+        scroll into the page.
         Transform + opacity only → stays on the compositor.
      ---------------------------------------------------------------- */
   safe('hero-scroll', () => {
@@ -100,8 +100,7 @@
     });
     tl.to('.hero__cinema-title', { yPercent: -34, autoAlpha: 0 }, 0)
       .to('.hero__cinema', { yPercent: -14 }, 0)
-      .to('.hero__text', { yPercent: -6, autoAlpha: 0.35 }, 0)
-      .to('.hero__card', { yPercent: 10 }, 0);
+      .to('.hero__text', { yPercent: -8, autoAlpha: 0.2 }, 0);
   });
 
   /* ----------------------------------------------------------------
