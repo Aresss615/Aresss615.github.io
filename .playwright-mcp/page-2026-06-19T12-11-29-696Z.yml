@@ -1,0 +1,450 @@
+- generic [active] [ref=e1]:
+  - link "Skip to work" [ref=e2] [cursor=pointer]:
+    - /url: "#work"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "John Chrisley — home" [ref=e5] [cursor=pointer]:
+        - /url: "#top"
+        - img [ref=e6]
+        - generic [ref=e10]: John Chrisley.dev
+      - button "Open menu" [ref=e12] [cursor=pointer]
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - paragraph [ref=e18]: Computer Engineer · Full-stack & Systems
+          - heading "I build software that ships — from the database to the device." [level=1] [ref=e20]:
+            - generic [ref=e22]: I build software
+            - generic [ref=e24]: that ships —
+            - generic [ref=e26]: from the database
+            - generic [ref=e28]:
+              - text: to the
+              - emphasis [ref=e29]: device.
+          - paragraph [ref=e30]: John Chrisley Delos Santos / BS Computer Engineering, MMSU – Batac · Ilocos Norte, PH
+          - paragraph [ref=e31]:
+            - text: Third-year computer engineering student who designs and ships production-grade systems — a point-of-sale platform in daily use at a working grocery, a configurable booking system, and apps spanning
+            - strong [ref=e32]: PHP
+            - text: ","
+            - strong [ref=e33]: Java
+            - text: ", and"
+            - strong [ref=e34]: TypeScript
+            - text: — with the hardware fundamentals to reason from the gate up.
+          - generic [ref=e35]:
+            - link "Selected work" [ref=e36] [cursor=pointer]:
+              - /url: "#work"
+              - generic [ref=e37]: Selected work
+              - img [ref=e38]
+            - link "Get in touch" [ref=e40] [cursor=pointer]:
+              - /url: "#contact"
+            - link "Career roadmap ↗" [ref=e41] [cursor=pointer]:
+              - /url: https://roadmap.johnchrisley.dev
+          - list [ref=e42]:
+            - listitem [ref=e43]:
+              - generic [ref=e44]: PHP · MySQL · Java · TypeScript
+            - listitem [ref=e45]:
+              - generic [ref=e46]: Production systems, not demos
+            - listitem [ref=e47]:
+              - generic [ref=e48]: Hardware + Software
+        - complementary "Profile" [ref=e49]:
+          - figure [ref=e50]:
+            - img "Portrait of John Chrisley Delos Santos" [ref=e56]
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]: Name
+              - generic [ref=e60]: J. C. Delos Santos
+            - generic [ref=e61]:
+              - generic [ref=e62]: Role
+              - generic [ref=e63]: Computer Engineer
+            - generic [ref=e64]:
+              - generic [ref=e65]: Focus
+              - generic [ref=e66]: Full-stack · Systems
+            - generic [ref=e67]:
+              - generic [ref=e68]: Status
+              - generic [ref=e69]: Open to internships
+      - link "Scroll to content" [ref=e70] [cursor=pointer]:
+        - /url: "#about"
+        - generic [ref=e71]: scroll
+    - generic [ref=e74]:
+      - generic [ref=e76]: 01 / About
+      - generic [ref=e78]:
+        - paragraph [ref=e79]:
+          - text: Computer engineering sits between two worlds — the
+          - emphasis [ref=e80]: logic of software
+          - text: and the
+          - emphasis [ref=e81]: constraints of hardware.
+          - text: "I work across both, and I care about one thing above all: systems that hold up in production, not just in a demo."
+        - generic [ref=e82]:
+          - paragraph [ref=e83]: I'm a third-year BS Computer Engineering student at Mariano Marcos State University – Batac. I've built and now maintain a point-of-sale system that runs a working grocery business, shipped a configurable reservation platform, and written software from JavaFX desktop apps to React/TypeScript tools.
+          - paragraph [ref=e84]: Before the code, I did real IT work — keeping store hardware and networks alive, maintaining municipal databases, and standing up backup routines for a local government unit. That ground-level experience is why I design for the messy real world, not the happy path.
+          - generic [ref=e85]:
+            - generic [ref=e86]: — J. C. Delos Santos
+            - generic [ref=e87]: Ilocos Norte · 18.03°N, 120.57°E
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]: 02 / Selected Work
+        - heading "Systems I designed, built, and still maintain." [level=2] [ref=e92]:
+          - text: Systems I designed,
+          - text: built, and still maintain.
+        - paragraph [ref=e93]: Three are sole-engineer builds. Every one solves a real problem for real users — no class assignments dressed up as products.
+      - generic [ref=e94]:
+        - article [ref=e95]:
+          - generic [ref=e96]:
+            - generic [ref=e97]:
+              - generic [ref=e98]: C-01
+              - generic [ref=e99]: Production · Retail Point-of-Sale
+            - heading "J&J Grocery POS" [level=3] [ref=e100]
+            - paragraph [ref=e101]: A complete point-of-sale and inventory system running the day-to-day of a real Philippine grocery store.
+            - generic [ref=e102]:
+              - generic [ref=e103]:
+                - generic [ref=e104]: Problem
+                - paragraph [ref=e105]: The store ran sales and stock by hand — slow checkout, no audit trail, and no reliable view of what was selling or what was left on the shelf.
+              - generic [ref=e106]:
+                - generic [ref=e107]: Approach
+                - paragraph [ref=e108]:
+                  - text: Vanilla PHP + MySQL, no framework — so it deploys on any cheap PHP host the store can actually afford. Barcode checkout auto-decrements stock; every sale, void, and refund posts to a
+                  - strong [ref=e109]: double-entry accounting journal
+                  - text: and an immutable audit trail. Receipts follow BIR formatting with 12% VAT and cash, GCash, and card tender.
+              - generic [ref=e110]:
+                - generic [ref=e111]: Engineering depth
+                - paragraph [ref=e112]:
+                  - text: Refunds use
+                  - strong [ref=e113]: optimistic locking
+                  - text: so double-refunds are impossible. Access is
+                  - strong [ref=e114]: permission-based
+                  - text: across four roles. CSRF protection on every write, session timeout, and Z-Read day-close. The schema has evolved across
+                  - strong [ref=e115]: nine migrations
+                  - text: as the store's needs grew, with PHPUnit tests on the core flows.
+            - generic [ref=e116]:
+              - list [ref=e117]:
+                - listitem [ref=e118]: PHP 8
+                - listitem [ref=e119]: MySQL 8
+                - listitem [ref=e120]: JavaScript
+                - listitem [ref=e121]: PHPUnit
+              - link "Read the code" [ref=e123] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/grocery-pos
+                - generic [ref=e124]: Read the code
+                - img [ref=e125]
+          - complementary [ref=e127]:
+            - generic [ref=e128]:
+              - generic [ref=e129]: Title block
+              - generic [ref=e130]:
+                - generic [ref=e131]: Client
+                - generic [ref=e132]: J&J Grocery
+              - generic [ref=e133]:
+                - generic [ref=e134]: Role
+                - generic [ref=e135]: Sole engineer
+              - generic [ref=e136]:
+                - generic [ref=e137]: Stack
+                - generic [ref=e138]: PHP · MySQL · JS
+              - generic [ref=e139]:
+                - generic [ref=e140]: Year
+                - generic [ref=e141]: 2025 – 26
+              - generic [ref=e142]:
+                - generic [ref=e143]: Status
+                - generic [ref=e144]: In daily use
+              - generic [ref=e145]:
+                - generic [ref=e146]: Schema
+                - generic [ref=e147]: 9 migrations
+            - figure "System architecture of the POS" [ref=e148]:
+              - generic [ref=e149]: Fig. 1 — Sale transaction path
+              - img "POS sale transaction architecture" [ref=e150]:
+                - generic [ref=e154]:
+                  - generic [ref=e157]: POS Terminal
+                  - generic [ref=e160]: Auth · RBAC
+                  - generic [ref=e163]: Inventory −
+                  - generic [ref=e164]:
+                    - generic [ref=e166]: Journal
+                    - generic [ref=e167]: double-entry
+                  - generic [ref=e170]: Receipt VAT
+                  - generic [ref=e173]: MySQL · audit trail
+        - article [ref=e174]:
+          - generic [ref=e175]:
+            - generic [ref=e176]:
+              - generic [ref=e177]: C-02
+              - generic [ref=e178]: Product · Configurable SaaS
+            - heading "BookmeIN — Reservation Platform" [level=3] [ref=e179]
+            - paragraph [ref=e180]: One booking codebase that reskins itself for hotels, restaurants, clinics, or salons.
+            - generic [ref=e181]:
+              - generic [ref=e182]:
+                - generic [ref=e183]: Problem
+                - paragraph [ref=e184]: Small service businesses all need the same engine — take bookings, never double-book — but with different vocabulary and fields.
+              - generic [ref=e185]:
+                - generic [ref=e186]: Approach
+                - paragraph [ref=e187]: A business-type preset drives dynamic labels and booking fields, so one install becomes a hotel-room booker or a dental scheduler by flipping a setting. Vanilla PHP API behind a single-file JS SPA — no build step.
+              - generic [ref=e188]:
+                - generic [ref=e189]: Engineering depth
+                - paragraph [ref=e190]:
+                  - text: Overbooking is prevented at the database level — bookings commit inside a transaction using
+                  - strong [ref=e191]: SELECT … FOR UPDATE
+                  - text: ", so two customers can't grab the same slot. bcrypt + HttpOnly session cookies, role-based access, and KPI reporting."
+            - generic [ref=e192]:
+              - list [ref=e193]:
+                - listitem [ref=e194]: PHP
+                - listitem [ref=e195]: MySQL
+                - listitem [ref=e196]: Vanilla JS
+                - listitem [ref=e197]: bcrypt
+              - link "Read the code" [ref=e199] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/bookmein
+                - generic [ref=e200]: Read the code
+                - img [ref=e201]
+          - complementary [ref=e203]:
+            - generic [ref=e204]:
+              - generic [ref=e205]: Title block
+              - generic [ref=e206]:
+                - generic [ref=e207]: Type
+                - generic [ref=e208]: Multi-tenant SaaS
+              - generic [ref=e209]:
+                - generic [ref=e210]: Role
+                - generic [ref=e211]: Sole engineer
+              - generic [ref=e212]:
+                - generic [ref=e213]: Stack
+                - generic [ref=e214]: PHP · MySQL · JS
+              - generic [ref=e215]:
+                - generic [ref=e216]: Presets
+                - generic [ref=e217]: Hotel · Resto · Dental · Salon
+              - generic [ref=e218]:
+                - generic [ref=e219]: Concurrency
+                - generic [ref=e220]: FOR UPDATE
+            - figure "Configurable architecture of BookmeIN" [ref=e221]:
+              - generic [ref=e222]: Fig. 2 — One install, many businesses
+              - img "BookmeIN preset-driven architecture" [ref=e223]:
+                - generic [ref=e225]:
+                  - generic [ref=e228]: Business preset
+                  - generic [ref=e231]: Dynamic UI + fields
+                  - generic [ref=e234]: Hotel
+                  - generic [ref=e237]: Salon
+                  - generic [ref=e240]: Clinic
+                  - generic [ref=e241]:
+                    - generic [ref=e243]: Booking txn
+                    - generic [ref=e244]: SELECT … FOR UPDATE
+        - article [ref=e245]:
+          - generic [ref=e246]:
+            - generic [ref=e247]:
+              - generic [ref=e248]: C-03
+              - generic [ref=e249]: Desktop · Java / JavaFX
+            - heading "Library Borrowing System" [level=3] [ref=e250]
+            - paragraph [ref=e251]: A native desktop app for tracking copies, loans, and overdue fines.
+            - generic [ref=e252]:
+              - generic [ref=e253]:
+                - generic [ref=e254]: Problem
+                - paragraph [ref=e255]: Manual borrowing records make overdue books and fines hard to track and easy to lose.
+              - generic [ref=e256]:
+                - generic [ref=e257]: Approach
+                - paragraph [ref=e258]: A Java + JavaFX desktop application backed by MySQL, with a deliberately clean, Apple-inspired UI. It tracks individual copies, the full borrow/return lifecycle, and automatic overdue detection with fine calculation.
+              - generic [ref=e259]:
+                - generic [ref=e260]: Engineering depth
+                - paragraph [ref=e261]: A Maven project with a JDBC data layer, admin/student roles, dashboard statistics, and filtered reports — proof I work beyond the browser, on the JVM and the desktop.
+            - generic [ref=e262]:
+              - list [ref=e263]:
+                - listitem [ref=e264]: Java 17
+                - listitem [ref=e265]: JavaFX 21
+                - listitem [ref=e266]: MySQL
+                - listitem [ref=e267]: Maven
+              - link "Read the code" [ref=e269] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/Library-Borrowing-System
+                - generic [ref=e270]: Read the code
+                - img [ref=e271]
+          - complementary [ref=e273]:
+            - generic [ref=e274]:
+              - generic [ref=e275]: Title block
+              - generic [ref=e276]:
+                - generic [ref=e277]: Platform
+                - generic [ref=e278]: Desktop (JVM)
+              - generic [ref=e279]:
+                - generic [ref=e280]: Role
+                - generic [ref=e281]: Sole engineer
+              - generic [ref=e282]:
+                - generic [ref=e283]: Stack
+                - generic [ref=e284]: Java · JavaFX · MySQL
+              - generic [ref=e285]:
+                - generic [ref=e286]: Build
+                - generic [ref=e287]: Maven
+              - generic [ref=e288]:
+                - generic [ref=e289]: Data
+                - generic [ref=e290]: JDBC layer
+            - figure "Layers of the Library app" [ref=e291]:
+              - generic [ref=e292]: Fig. 3 — Borrow / return lifecycle
+              - img "Library borrow and return state flow" [ref=e293]:
+                - generic [ref=e295]:
+                  - generic [ref=e298]: Borrow
+                  - generic [ref=e301]: Return
+                  - generic [ref=e304]: Catalog · copies in stock
+                  - generic [ref=e305]:
+                    - generic [ref=e307]: Overdue → fine
+                    - generic [ref=e308]: auto-calculated
+      - generic [ref=e309]:
+        - generic [ref=e310]:
+          - generic [ref=e311]: Also in the lab
+          - link "All repositories ↗" [ref=e312] [cursor=pointer]:
+            - /url: https://github.com/Aresss615
+        - list [ref=e313]:
+          - listitem [ref=e314]:
+            - link "MLBB Draft AI Pick-and-counter drafting assistant for Mobile Legends. React · TypeScript · Vite" [ref=e315] [cursor=pointer]:
+              - /url: https://github.com/Aresss615/MLBB-draft-ai
+              - generic [ref=e316]: MLBB Draft AI
+              - generic [ref=e317]: Pick-and-counter drafting assistant for Mobile Legends.
+              - generic [ref=e318]: React · TypeScript · Vite
+          - listitem [ref=e319]:
+            - link "Career Roadmap A self-built, interactive plan of how I'm leveling up. HTML · JS" [ref=e320] [cursor=pointer]:
+              - /url: https://roadmap.johnchrisley.dev
+              - generic [ref=e321]: Career Roadmap
+              - generic [ref=e322]: A self-built, interactive plan of how I'm leveling up.
+              - generic [ref=e323]: HTML · JS
+          - listitem [ref=e324]:
+            - link "Automation & tools Python bots and small apps — APIs, scraping, and scheduling. Python · JS" [ref=e325] [cursor=pointer]:
+              - /url: https://github.com/Aresss615
+              - generic [ref=e326]: Automation & tools
+              - generic [ref=e327]: Python bots and small apps — APIs, scraping, and scheduling.
+              - generic [ref=e328]: Python · JS
+    - generic [ref=e330]:
+      - generic [ref=e331]:
+        - generic [ref=e332]: 03 / Capabilities
+        - heading "From the gate up, and the framework down." [level=2] [ref=e333]:
+          - text: From the gate up,
+          - text: and the framework down.
+      - generic [ref=e334]:
+        - generic [ref=e335]:
+          - generic [ref=e336]:
+            - generic [ref=e337]: S1
+            - heading "Software" [level=3] [ref=e338]
+          - list [ref=e339]:
+            - listitem [ref=e340]: C
+            - listitem [ref=e341]: C++
+            - listitem [ref=e342]: Java
+            - listitem [ref=e343]: JavaScript
+            - listitem [ref=e344]: TypeScript
+            - listitem [ref=e345]: PHP
+            - listitem [ref=e346]: SQL
+        - generic [ref=e347]:
+          - generic [ref=e348]:
+            - generic [ref=e349]: S2
+            - heading "Web" [level=3] [ref=e350]
+          - list [ref=e351]:
+            - listitem [ref=e352]: HTML
+            - listitem [ref=e353]: CSS
+            - listitem [ref=e354]: Vanilla JS
+            - listitem [ref=e355]: React
+            - listitem [ref=e356]: PHP
+            - listitem [ref=e357]: MySQL
+        - generic [ref=e358]:
+          - generic [ref=e359]:
+            - generic [ref=e360]: S3
+            - heading "Systems & Networking" [level=3] [ref=e361]
+          - list [ref=e362]:
+            - listitem [ref=e363]: TCP/IP
+            - listitem [ref=e364]: LAN infrastructure
+            - listitem [ref=e365]: Network troubleshooting
+            - listitem [ref=e366]: Data backup
+            - listitem [ref=e367]: Shell
+        - generic [ref=e368]:
+          - generic [ref=e369]:
+            - generic [ref=e370]: S4
+            - heading "Hardware & Embedded" [level=3] [ref=e371]
+          - generic [ref=e372]:
+            - list [ref=e373]:
+              - listitem [ref=e374]: Arduino
+              - listitem [ref=e375]: Digital logic design
+              - listitem [ref=e376]: Verilog (Xilinx)
+              - listitem [ref=e377]: AutoCAD
+            - paragraph [ref=e378]: // the computer-engineering half — I can reason about the silicon, not just the SDK.
+      - generic [ref=e379]:
+        - generic [ref=e380]: Tools
+        - list [ref=e381]:
+          - listitem [ref=e382]: Git / GitHub
+          - listitem [ref=e383]: VS Code
+          - listitem [ref=e384]: Composer
+          - listitem [ref=e385]: Maven
+          - listitem [ref=e386]: Vite
+          - listitem [ref=e387]: Xilinx
+    - generic [ref=e389]:
+      - generic [ref=e390]:
+        - generic [ref=e391]: 04 / Experience
+        - heading "Real work, real systems." [level=2] [ref=e392]
+      - list [ref=e393]:
+        - listitem [ref=e394]:
+          - generic [ref=e395]:
+            - generic [ref=e396]: Nov 2022 — Present
+            - generic [ref=e397]: Current
+          - generic [ref=e398]:
+            - heading "Technical Support & System Development" [level=3] [ref=e399]
+            - paragraph [ref=e400]: J&J Grocery · Solsona, Ilocos Norte
+            - list [ref=e401]:
+              - listitem [ref=e402]:
+                - text: → Designed, built, and maintain the store's production POS & inventory system
+                - link "(flagship above)" [ref=e403] [cursor=pointer]:
+                  - /url: "#work"
+                - text: .
+              - listitem [ref=e404]: → Keep POS terminals, networking, and store hardware running for daily retail operations.
+              - listitem [ref=e405]: → Turn day-to-day operational pain points into shipped software features.
+        - listitem [ref=e406]:
+          - generic [ref=e407]:
+            - generic [ref=e408]: Feb 2023 — Mar 2023
+            - generic [ref=e409]: OJT
+          - generic [ref=e410]:
+            - heading "IT Intern (On-the-Job Training)" [level=3] [ref=e411]
+            - paragraph [ref=e412]: LGU Solsona · Ilocos Norte
+            - list [ref=e413]:
+              - listitem [ref=e414]: → Maintained municipal records in SQL and supported routine system administration.
+              - listitem [ref=e415]: → Crimped and tested LAN runs; diagnosed connectivity faults across offices.
+              - listitem [ref=e416]: → Helped stand up data-backup routines to protect municipal records.
+    - generic [ref=e418]:
+      - generic [ref=e420]: 05 / Education
+      - generic [ref=e422]:
+        - generic [ref=e423]:
+          - text: 2023 — Present
+          - heading "BS Computer Engineering" [level=3] [ref=e424]
+          - paragraph [ref=e425]: Mariano Marcos State University — Batac Campus
+          - paragraph [ref=e426]: Ilocos Norte, Philippines · Class of 2027
+        - generic [ref=e427]:
+          - text: 2017 — 2023
+          - heading "Senior High School — STEM" [level=3] [ref=e428]
+          - paragraph [ref=e429]: Solsona National High School
+          - paragraph [ref=e430]: Solsona, Ilocos Norte
+    - generic [ref=e432]:
+      - generic [ref=e433]: 06 / Contact
+      - generic [ref=e434]:
+        - generic [ref=e435]:
+          - heading "Looking for an internship where I can ship real work." [level=2] [ref=e436]:
+            - text: Looking for an internship
+            - text: where I can
+            - emphasis [ref=e437]: ship real work.
+          - paragraph [ref=e438]: Open to internships and software / IT roles. The fastest way to reach me is email — I read everything and reply.
+          - generic [ref=e439]: — J. C. Delos Santos · Ilocos Norte, PH
+        - list [ref=e440]:
+          - listitem [ref=e441]:
+            - link "Email · preferred johnchrisley4@gmail.com" [ref=e442] [cursor=pointer]:
+              - /url: mailto:johnchrisley4@gmail.com
+              - generic [ref=e443]: Email · preferred
+              - generic [ref=e444]: johnchrisley4@gmail.com
+              - generic [ref=e445]: →
+          - listitem [ref=e446]:
+            - link "GitHub @Aresss615" [ref=e447] [cursor=pointer]:
+              - /url: https://github.com/Aresss615
+              - generic [ref=e448]: GitHub
+              - generic [ref=e449]: "@Aresss615"
+              - generic [ref=e450]: ↗
+          - listitem [ref=e451]:
+            - link "LinkedIn in/johnchrisley" [ref=e452] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/johnchrisley
+              - generic [ref=e453]: LinkedIn
+              - generic [ref=e454]: in/johnchrisley
+              - generic [ref=e455]: ↗
+          - listitem [ref=e456]:
+            - link "Phone +63 947 893 8873" [ref=e457] [cursor=pointer]:
+              - /url: tel:+639478938873
+              - generic [ref=e458]: Phone
+              - generic [ref=e459]: +63 947 893 8873
+              - generic [ref=e460]: →
+  - contentinfo [ref=e461]:
+    - generic [ref=e462]:
+      - generic [ref=e463]:
+        - generic [ref=e464]: John Chrisley.dev
+        - generic [ref=e465]: Designed & built from scratch — no template, no framework.
+      - generic [ref=e466]:
+        - generic [ref=e467]: © 2026 J. C. Delos Santos
+        - generic [ref=e468]: ·
+        - link "Source" [ref=e469] [cursor=pointer]:
+          - /url: https://github.com/Aresss615/Aresss615.github.io
+        - generic [ref=e470]: ·
+        - link "Back to top ↑" [ref=e471] [cursor=pointer]:
+          - /url: "#top"

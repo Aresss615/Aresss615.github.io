@@ -1,0 +1,374 @@
+- generic [active] [ref=e1]:
+  - link "Skip to work" [ref=e2] [cursor=pointer]:
+    - /url: "#work"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "John Chrisley — home" [ref=e5] [cursor=pointer]:
+        - /url: "#top"
+        - img [ref=e6]
+        - generic [ref=e10]: John Chrisley.dev
+      - navigation "Primary" [ref=e11]:
+        - link "About" [ref=e12] [cursor=pointer]:
+          - /url: "#about"
+        - link "Work" [ref=e13] [cursor=pointer]:
+          - /url: "#work"
+        - link "Capabilities" [ref=e14] [cursor=pointer]:
+          - /url: "#stack"
+        - link "Experience" [ref=e15] [cursor=pointer]:
+          - /url: "#experience"
+        - link "Contact" [ref=e16] [cursor=pointer]:
+          - /url: "#contact"
+      - link "Résumé ↓" [ref=e18] [cursor=pointer]:
+        - /url: https://drive.google.com/uc?export=download&id=1K0SmSttcz0BwnOK9-gqVg9O5dzLa0S3p
+  - navigation [ref=e19]:
+    - list [ref=e20]:
+      - listitem [ref=e21]:
+        - link [ref=e22] [cursor=pointer]:
+          - /url: "#top"
+          - generic [ref=e23]: "00"
+          - generic [ref=e24]: Intro
+      - listitem [ref=e25]:
+        - link [ref=e26] [cursor=pointer]:
+          - /url: "#about"
+          - generic [ref=e27]: "01"
+          - generic [ref=e28]: About
+      - listitem [ref=e29]:
+        - link [ref=e30] [cursor=pointer]:
+          - /url: "#work"
+          - generic [ref=e31]: "02"
+          - generic [ref=e32]: Work
+      - listitem [ref=e33]:
+        - link [ref=e34] [cursor=pointer]:
+          - /url: "#stack"
+          - generic [ref=e35]: "03"
+          - generic [ref=e36]: Stack
+      - listitem [ref=e37]:
+        - link [ref=e38] [cursor=pointer]:
+          - /url: "#experience"
+          - generic [ref=e39]: "04"
+          - generic [ref=e40]: Experience
+      - listitem [ref=e41]:
+        - link [ref=e42] [cursor=pointer]:
+          - /url: "#education"
+          - generic [ref=e43]: "05"
+          - generic [ref=e44]: Studies
+      - listitem [ref=e45]:
+        - link [ref=e46] [cursor=pointer]:
+          - /url: "#contact"
+          - generic [ref=e47]: "06"
+          - generic [ref=e48]: Contact
+  - main [ref=e49]:
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - paragraph [ref=e53]: Computer Engineer · Full-stack & Systems
+          - heading "I build software that ships — from the database to the device." [level=1] [ref=e55]:
+            - generic [ref=e57]: I build software
+            - generic [ref=e59]: that ships —
+            - generic [ref=e61]: from the database
+            - generic [ref=e63]:
+              - text: to the
+              - emphasis [ref=e64]: device.
+        - complementary "Profile" [ref=e65]:
+          - figure [ref=e66]:
+            - img "Portrait of John Chrisley Delos Santos" [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: Name
+              - generic [ref=e76]: J.C.E. Delos Santos
+            - generic [ref=e77]:
+              - generic [ref=e78]: Role
+              - generic [ref=e79]: Computer Engineer
+            - generic [ref=e80]:
+              - generic [ref=e81]: Focus
+              - generic [ref=e82]: Full-stack · Systems
+            - generic [ref=e83]:
+              - generic [ref=e84]: Based
+              - generic [ref=e85]: Ilocos Norte, PH
+      - link "Scroll to content" [ref=e86] [cursor=pointer]:
+        - /url: "#about"
+        - generic [ref=e87]: scroll
+    - generic [ref=e90]:
+      - generic [ref=e91]:
+        - generic [ref=e92]: Production systems ✦
+        - generic [ref=e93]: Point of sale ✦
+        - generic [ref=e94]: Django · MVT ✦
+        - generic [ref=e95]: AI video pipelines ✦
+        - generic [ref=e96]: PHP · MySQL ✦
+        - generic [ref=e97]: Python ✦
+        - generic [ref=e98]: TypeScript · React ✦
+        - generic [ref=e99]: Hardware to software ✦
+      - generic [ref=e100]:
+        - generic [ref=e101]: Production systems ✦
+        - generic [ref=e102]: Point of sale ✦
+        - generic [ref=e103]: Django · MVT ✦
+        - generic [ref=e104]: AI video pipelines ✦
+        - generic [ref=e105]: PHP · MySQL ✦
+        - generic [ref=e106]: Python ✦
+        - generic [ref=e107]: TypeScript · React ✦
+        - generic [ref=e108]: Hardware to software ✦
+    - paragraph [ref=e112]
+    - generic [ref=e114]:
+      - generic [ref=e115]:
+        - article [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e118]:
+              - generic [ref=e119]: C-01
+              - generic [ref=e120]: Production · Retail Point-of-Sale
+            - heading "J&J Grocery POS" [level=3] [ref=e121]
+            - paragraph [ref=e122]: A complete point-of-sale and inventory system running the day-to-day of a real Philippine grocery store.
+            - generic [ref=e123]:
+              - generic [ref=e124]:
+                - generic [ref=e125]: Problem
+                - paragraph [ref=e126]: The store ran sales and stock by hand — slow checkout, no audit trail, and no reliable view of what was selling or what was left on the shelf.
+              - generic [ref=e127]:
+                - generic [ref=e128]: Approach
+                - paragraph [ref=e129]:
+                  - text: Vanilla PHP + MySQL, no framework — so it deploys on any cheap PHP host the store can actually afford. Barcode checkout auto-decrements stock; every sale, void, and refund posts to a
+                  - strong [ref=e130]: double-entry accounting journal
+                  - text: and an immutable audit trail. Receipts follow BIR formatting with 12% VAT and cash, GCash, and card tender.
+              - generic [ref=e131]:
+                - generic [ref=e132]: Engineering depth
+                - paragraph [ref=e133]:
+                  - text: Refunds use
+                  - strong [ref=e134]: optimistic locking
+                  - text: so double-refunds are impossible. Access is
+                  - strong [ref=e135]: permission-based
+                  - text: across four roles. CSRF protection on every write, session timeout, and Z-Read day-close. The schema has evolved across
+                  - strong [ref=e136]: nine migrations
+                  - text: as the store's needs grew, with PHPUnit tests on the core flows.
+            - generic [ref=e137]:
+              - list [ref=e138]:
+                - listitem [ref=e139]: PHP 8
+                - listitem [ref=e140]: MySQL 8
+                - listitem [ref=e141]: JavaScript
+                - listitem [ref=e142]: PHPUnit
+              - link "Read the code" [ref=e144] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/grocery-pos
+                - generic [ref=e145]: Read the code
+                - img [ref=e146]
+          - complementary [ref=e148]:
+            - generic [ref=e149]:
+              - generic [ref=e150]: Title block
+              - generic [ref=e151]:
+                - generic [ref=e152]: Client
+                - generic [ref=e153]: J&J Grocery
+              - generic [ref=e154]:
+                - generic [ref=e155]: Role
+                - generic [ref=e156]: Sole engineer
+              - generic [ref=e157]:
+                - generic [ref=e158]: Stack
+                - generic [ref=e159]: PHP · MySQL · JS
+              - generic [ref=e160]:
+                - generic [ref=e161]: Year
+                - generic [ref=e162]: 2025 – 26
+              - generic [ref=e163]:
+                - generic [ref=e164]: Status
+                - generic [ref=e165]: In daily use
+              - generic [ref=e166]:
+                - generic [ref=e167]: Schema
+                - generic [ref=e168]: 9 migrations
+            - figure "System architecture of the POS" [ref=e169]:
+              - generic [ref=e170]: Fig. 1 — Sale transaction path
+              - img "POS sale transaction architecture" [ref=e171]:
+                - generic [ref=e175]:
+                  - generic [ref=e178]: POS Terminal
+                  - generic [ref=e181]: Auth · RBAC
+                  - generic [ref=e184]: Inventory −
+                  - generic [ref=e185]:
+                    - generic [ref=e187]: Journal
+                    - generic [ref=e188]: double-entry
+                  - generic [ref=e191]: Receipt VAT
+                  - generic [ref=e194]: MySQL · audit trail
+        - article [ref=e195]:
+          - generic [ref=e196]:
+            - generic [ref=e197]:
+              - generic [ref=e198]: C-02
+              - generic [ref=e199]: Product · Configurable SaaS
+            - heading "BookmeIN — Reservation Platform" [level=3] [ref=e200]
+            - paragraph [ref=e201]: One booking codebase that reskins itself for hotels, restaurants, clinics, or salons.
+            - generic [ref=e202]:
+              - generic [ref=e203]:
+                - generic [ref=e204]: Problem
+                - paragraph [ref=e205]: Small service businesses all need the same engine — take bookings, never double-book — but with different vocabulary and fields.
+              - generic [ref=e206]:
+                - generic [ref=e207]: Approach
+                - paragraph [ref=e208]: A business-type preset drives dynamic labels and booking fields, so one install becomes a hotel-room booker or a dental scheduler by flipping a setting. Vanilla PHP API behind a single-file JS SPA — no build step.
+              - generic [ref=e209]:
+                - generic [ref=e210]: Engineering depth
+                - paragraph [ref=e211]:
+                  - text: Overbooking is prevented at the database level — bookings commit inside a transaction using
+                  - strong [ref=e212]: SELECT … FOR UPDATE
+                  - text: ", so two customers can't grab the same slot. bcrypt + HttpOnly session cookies, role-based access, and KPI reporting."
+            - generic [ref=e213]:
+              - list [ref=e214]:
+                - listitem [ref=e215]: PHP
+                - listitem [ref=e216]: MySQL
+                - listitem [ref=e217]: Vanilla JS
+                - listitem [ref=e218]: bcrypt
+              - link "Read the code" [ref=e220] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/bookmein
+                - generic [ref=e221]: Read the code
+                - img [ref=e222]
+          - complementary [ref=e224]:
+            - generic [ref=e225]:
+              - generic [ref=e226]: Title block
+              - generic [ref=e227]:
+                - generic [ref=e228]: Type
+                - generic [ref=e229]: Multi-tenant SaaS
+              - generic [ref=e230]:
+                - generic [ref=e231]: Role
+                - generic [ref=e232]: Sole engineer
+              - generic [ref=e233]:
+                - generic [ref=e234]: Stack
+                - generic [ref=e235]: PHP · MySQL · JS
+              - generic [ref=e236]:
+                - generic [ref=e237]: Presets
+                - generic [ref=e238]: Hotel · Resto · Dental · Salon
+              - generic [ref=e239]:
+                - generic [ref=e240]: Concurrency
+                - generic [ref=e241]: FOR UPDATE
+            - figure "Configurable architecture of BookmeIN" [ref=e242]:
+              - generic [ref=e243]: Fig. 2 — One install, many businesses
+              - img "BookmeIN preset-driven architecture" [ref=e244]:
+                - generic [ref=e246]:
+                  - generic [ref=e249]: Business preset
+                  - generic [ref=e252]: Dynamic UI + fields
+                  - generic [ref=e255]: Hotel
+                  - generic [ref=e258]: Salon
+                  - generic [ref=e261]: Clinic
+                  - generic [ref=e262]:
+                    - generic [ref=e264]: Booking txn
+                    - generic [ref=e265]: SELECT … FOR UPDATE
+        - article [ref=e266]:
+          - generic [ref=e267]:
+            - generic [ref=e268]:
+              - generic [ref=e269]: C-03
+              - generic [ref=e270]: Open Source · AI Media Pipeline (Python)
+            - heading "MoneyPrinterTurbo — Extended" [level=3] [ref=e271]
+            - paragraph [ref=e272]: An open-source TikTok / Shorts generator I forked and extended — turning a script into a finished, captioned vertical video, end to end.
+            - generic [ref=e273]:
+              - generic [ref=e274]:
+                - generic [ref=e275]: Problem
+                - paragraph [ref=e276]: The base project picked stock clips at random and leaned on a paid cloud voice. Captions were block-timed, so words never lit up in sync with the narration — the videos felt generic and the costs didn't scale.
+              - generic [ref=e277]:
+                - generic [ref=e278]: Approach
+                - paragraph [ref=e279]:
+                  - text: I forked
+                  - strong [ref=e280]: MoneyPrinterTurbo
+                  - text: and rebuilt three subsystems.
+                  - strong [ref=e281]: Semantic clip matching
+                  - text: embeds the script and ranks stock footage by meaning instead of random selection. Local
+                  - strong [ref=e282]: Chatterbox TTS
+                  - text: with voice cloning replaces paid Azure — no API cost, no rate limits. And captions highlight
+                  - strong [ref=e283]: word-by-word
+                  - text: ", lighting each word exactly as it's spoken."
+              - generic [ref=e284]:
+                - generic [ref=e285]: Engineering depth
+                - paragraph [ref=e286]:
+                  - text: Word-level highlighting is driven by
+                  - strong [ref=e287]: WhisperX
+                  - text: forced-alignment against the TTS audio, so subtitles track real word boundaries across wrapped, multi-line text. The render path runs on MoviePy with automatic CPU fallback when CUDA is unavailable — built to run on whatever machine is in front of you.
+            - generic [ref=e288]:
+              - list [ref=e289]:
+                - listitem [ref=e290]: Python
+                - listitem [ref=e291]: Streamlit
+                - listitem [ref=e292]: MoviePy
+                - listitem [ref=e293]: WhisperX
+                - listitem [ref=e294]: Chatterbox TTS
+              - link "Read the code" [ref=e296] [cursor=pointer]:
+                - /url: https://github.com/Aresss615/MoneyPrinterTurbo-Extended
+                - generic [ref=e297]: Read the code
+                - img [ref=e298]
+          - complementary [ref=e300]:
+            - generic [ref=e301]:
+              - generic [ref=e302]: Title block
+              - generic [ref=e303]:
+                - generic [ref=e304]: Type
+                - generic [ref=e305]: OSS fork + extension
+              - generic [ref=e306]:
+                - generic [ref=e307]: Role
+                - generic [ref=e308]: Contributor
+              - generic [ref=e309]:
+                - generic [ref=e310]: Stack
+                - generic [ref=e311]: Python · ML · FFmpeg
+              - generic [ref=e312]:
+                - generic [ref=e313]: TTS
+                - generic [ref=e314]: Local · voice-clone
+              - generic [ref=e315]:
+                - generic [ref=e316]: Captions
+                - generic [ref=e317]: Word-level sync
+            - figure "Architecture of the AI video pipeline" [ref=e318]:
+              - generic [ref=e319]: Fig. 3 — Script → finished video
+              - img "AI video generation pipeline" [ref=e320]:
+                - generic [ref=e324]:
+                  - generic [ref=e327]: Script (LLM)
+                  - generic [ref=e330]: Chatterbox TTS
+                  - generic [ref=e331]:
+                    - generic [ref=e333]: WhisperX
+                    - generic [ref=e334]: word timing
+                  - generic [ref=e335]:
+                    - generic [ref=e337]: Semantic
+                    - generic [ref=e338]: clip match
+                  - generic [ref=e339]:
+                    - generic [ref=e341]: MoviePy render
+                    - generic [ref=e342]: word-by-word captions
+      - generic [ref=e343]:
+        - generic [ref=e344]:
+          - generic [ref=e345]: Also in the lab
+          - link "All repositories ↗" [ref=e346] [cursor=pointer]:
+            - /url: https://github.com/Aresss615
+        - list [ref=e347]
+    - generic [ref=e351]:
+      - generic [ref=e352]: Tools
+      - list [ref=e353]:
+        - listitem [ref=e354]: Git / GitHub
+        - listitem [ref=e355]: VS Code
+        - listitem [ref=e356]: Composer
+        - listitem [ref=e357]: Maven
+        - listitem [ref=e358]: Vite
+        - listitem [ref=e359]: Xilinx
+    - list [ref=e362]
+    - generic [ref=e366]:
+      - generic:
+        - generic: DELOS SANTOS
+      - generic [ref=e367]:
+        - generic [ref=e368]: 06 / Contact
+        - list [ref=e370]:
+          - listitem [ref=e371]
+          - listitem [ref=e372]
+          - listitem [ref=e373]
+          - listitem [ref=e374]
+  - contentinfo [ref=e375]:
+    - generic [ref=e376]:
+      - generic [ref=e377]:
+        - generic [ref=e378]: John Chrisley.dev
+        - generic [ref=e379]: Designed & built from scratch — no template, no framework.
+      - generic [ref=e380]:
+        - generic [ref=e381]: © 2026 John Chrisley E. Delos Santos
+        - generic [ref=e382]: ·
+        - link "Source" [ref=e383] [cursor=pointer]:
+          - /url: https://github.com/Aresss615/Aresss615.github.io
+        - generic [ref=e384]: ·
+        - link "Back to top ↑" [ref=e385] [cursor=pointer]:
+          - /url: "#top"
+  - generic [ref=e387]:
+    - generic [ref=e388]: Computer Engineer · Full-stack & Systems
+    - heading [level=2] [ref=e389]:
+      - generic [ref=e390]:
+        - generic [ref=e391]: J
+        - generic [ref=e392]: o
+        - generic [ref=e393]: h
+        - generic [ref=e394]: "n"
+      - generic [ref=e395]:
+        - generic [ref=e396]: C
+        - generic [ref=e397]: h
+        - generic [ref=e398]: r
+        - generic [ref=e399]: i
+        - generic [ref=e400]: s
+        - generic [ref=e401]: l
+        - generic [ref=e402]: e
+        - generic [ref=e403]: "y"
+    - generic [ref=e404]:
+      - generic [ref=e405]: "0"
+      - generic [ref=e407]: Loading
