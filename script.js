@@ -1,148 +1,141 @@
 /* ================================================================
-   SIGNALS — interactions for John Chrisley's portfolio
-   Vanilla JS, no dependencies. Everything is feature-detected and
-   reduced-motion aware. Modules:
-     1. reveal        — scroll-triggered entrances (IntersectionObserver)
-     2. activeSection — header + rail active state
-     3. railProgress  — scroll-linked progress on the left rail
-     4. header        — scrolled state
-     5. mobileMenu    — open/close
-     6. magnetic      — pointer-following buttons (desktop only)
+   johnchrisley.dev · interactions (vanilla, no dependencies)
+   Motion budget: transform + opacity only; nothing runs off-screen.
+   1 boot · 2 header · 3 mobile menu · 4 reveals · 5 roller
+   6 counter · 7 card stack
    ================================================================ */
 (() => {
   'use strict';
+  window.__jc = true;
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer  = window.matchMedia('(pointer: fine)').matches;
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasIO = 'IntersectionObserver' in window;
 
-  /* ----------------------------------------------------------------
-     1 · REVEAL ON SCROLL
-     ---------------------------------------------------------------- */
-  const revealEls = document.querySelectorAll('[data-reveal]');
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-    revealEls.forEach(el => io.observe(el));
+  /* 1 · boot: start the hero entrance on the next frame */
+  requestAnimationFrame(() => root.classList.add('is-loaded'));
+
+  /* 2 · header: solid background once the page scrolls */
+  const header = document.getElementById('header');
+  const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+  syncHeader();
+  window.addEventListener('scroll', syncHeader, { passive: true });
+
+  /* 3 · mobile menu */
+  const toggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('mobileMenu');
+  const setMenu = (open) => {
+    menu.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    root.classList.toggle('menu-open', open);
+  };
+  toggle.addEventListener('click', () => setMenu(menu.hidden));
+  menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) { setMenu(false); toggle.focus(); }
+  });
+  window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+
+  /* 4 · reveals: fade + rise once, then stop observing */
+  const reveals = document.querySelectorAll('[data-reveal]');
+  if (reduce || !hasIO) {
+    reveals.forEach((el) => el.classList.add('is-in'));
   } else {
-    revealEls.forEach(el => el.classList.add('is-in'));
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    reveals.forEach((el) => io.observe(el));
   }
 
-  /* ----------------------------------------------------------------
-     2 · ACTIVE SECTION (header links + rail)
-     ---------------------------------------------------------------- */
-  const sectionIds = ['hero', 'about', 'work', 'stack', 'experience', 'education', 'contact'];
-  const sections = sectionIds
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
-
-  const headerLinks = document.querySelectorAll('.header__link');
-  const railLinks   = document.querySelectorAll('.rail__list a');
-
-  function setActive(id) {
-    const key = id === 'hero' ? 'top' : id;
-    headerLinks.forEach(a =>
-      a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
-    railLinks.forEach(a =>
-      a.classList.toggle('is-active', a.getAttribute('data-rail') === key));
+  /* 5 · roller: pause the rolling word while the hero is off-screen */
+  const roller = document.querySelector('.roller');
+  if (roller && hasIO && !reduce) {
+    new IntersectionObserver(([entry]) => {
+      roller.classList.toggle('is-paused', !entry.isIntersecting);
+    }).observe(roller);
   }
 
-  if ('IntersectionObserver' in window && sections.length) {
-    const spy = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-    sections.forEach(s => spy.observe(s));
+  /* 6 · counter: tick proof numbers up once, as they fade in */
+  const countUp = (el) => {
+    const end = Number(el.dataset.count);
+    const start = performance.now();
+    const tick = (now) => {
+      const k = Math.min(1, (now - start) / 900);
+      el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    el.textContent = '0';
+    requestAnimationFrame(tick);
+  };
+  if (hasIO && !reduce) {
+    const cio = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        cio.unobserve(entry.target);
+        countUp(entry.target);
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    document.querySelectorAll('[data-count]').forEach((el) => cio.observe(el));
   }
 
-  /* ----------------------------------------------------------------
-     3 · RAIL PROGRESS + HEADER STATE (scroll, rAF-throttled)
-     ---------------------------------------------------------------- */
-  const header       = document.getElementById('header');
-  const rail         = document.getElementById('rail');
-  const railProgress = document.getElementById('railProgress');
-  let ticking = false;
+  /* 7 · card stack: sticky cards, and the covered card eases back as the
+         next one slides over. Only when every card fits on screen, so no
+         card can hide its own bottom under the next one. */
+  const cases = document.querySelector('.cases');
+  if (!cases) return;
+  const cards = [...cases.querySelectorAll('.case')];
+  const wide = window.matchMedia('(min-width: 761px)');
+  let stacking = false;
+  let near = !hasIO;
+  let frame = 0;
+  let metrics = [];
 
-  function onScrollFrame() {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const docH = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docH > 0 ? Math.min(scrollTop / docH, 1) : 0;
-
-    if (header) header.classList.toggle('header--scrolled', scrollTop > 40);
-
-    if (rail && railProgress) {
-      const track = rail.offsetHeight - 8;
-      railProgress.style.height = (progress * track) + 'px';
+  const update = () => {
+    frame = 0;
+    if (!stacking) return;
+    const tops = cards.map((c) => c.getBoundingClientRect().top);
+    for (let i = 0; i < cards.length - 1; i++) {
+      const p = 1 - (tops[i + 1] - metrics[i + 1].top) / metrics[i].h;
+      cards[i].firstElementChild.style.setProperty('--p', Math.min(1, Math.max(0, p)).toFixed(3));
     }
-    ticking = false;
-  }
+  };
 
-  function requestScroll() {
-    if (!ticking) {
-      window.requestAnimationFrame(onScrollFrame);
-      ticking = true;
+  const measure = () => {
+    stacking = false;
+    cases.classList.remove('is-stacking');
+    cards.forEach((c) => c.firstElementChild.style.removeProperty('--p'));
+    if (reduce || !wide.matches) return;
+    cases.classList.add('is-stacking');
+    metrics = cards.map((c) => ({ top: parseFloat(getComputedStyle(c).top) || 0, h: c.offsetHeight }));
+    if (!metrics.every((m) => m.top + m.h <= window.innerHeight - 16)) {
+      cases.classList.remove('is-stacking');
+      return;
     }
-  }
-  window.addEventListener('scroll', requestScroll, { passive: true });
-  window.addEventListener('resize', requestScroll, { passive: true });
-  onScrollFrame();
+    stacking = true;
+    update();
+  };
 
-  /* ----------------------------------------------------------------
-     4 · MOBILE MENU
-     ---------------------------------------------------------------- */
-  const menuToggle = document.getElementById('menuToggle');
-  const mobileMenu = document.getElementById('mobileMenu');
+  if (hasIO) {
+    new IntersectionObserver(([entry]) => {
+      near = entry.isIntersecting;
+      if (near && stacking && !frame) frame = requestAnimationFrame(update);
+    }, { rootMargin: '200px 0px' }).observe(cases);
+  }
+  window.addEventListener('scroll', () => {
+    if (stacking && near && !frame) frame = requestAnimationFrame(update);
+  }, { passive: true });
 
-  function closeMenu() {
-    if (!menuToggle || !mobileMenu) return;
-    menuToggle.classList.remove('is-open');
-    menuToggle.setAttribute('aria-expanded', 'false');
-    mobileMenu.classList.remove('is-open');
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-  function openMenu() {
-    menuToggle.classList.add('is-open');
-    menuToggle.setAttribute('aria-expanded', 'true');
-    mobileMenu.classList.add('is-open');
-    mobileMenu.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener('click', () =>
-      mobileMenu.classList.contains('is-open') ? closeMenu() : openMenu());
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-    window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-    // close if resized up to desktop
-    window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => {
-      if (e.matches) closeMenu();
-    });
-  }
-
-  /* ----------------------------------------------------------------
-     5 · MAGNETIC BUTTONS (desktop, motion-on only)
-     ---------------------------------------------------------------- */
-  if (finePointer && !reduceMotion) {
-    const STRENGTH = 0.28;
-    const MAX = 9;
-    document.querySelectorAll('[data-magnetic]').forEach(el => {
-      el.style.transition = 'transform 0.25s cubic-bezier(0.22,1,0.36,1)';
-      el.addEventListener('pointermove', (e) => {
-        const r = el.getBoundingClientRect();
-        let dx = (e.clientX - (r.left + r.width / 2)) * STRENGTH;
-        let dy = (e.clientY - (r.top + r.height / 2)) * STRENGTH;
-        dx = Math.max(-MAX, Math.min(MAX, dx));
-        dy = Math.max(-MAX, Math.min(MAX, dy));
-        el.style.transform = `translate(${dx}px, ${dy}px)`;
-      });
-      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-    });
-  }
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(measure, 150);
+  });
+  window.addEventListener('load', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
 })();
