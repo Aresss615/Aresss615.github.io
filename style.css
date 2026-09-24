@@ -451,6 +451,7 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
 /* 11 · about ------------------------------------------------------ */
 .about { border-top: 1px solid var(--line); }
 .about__grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2.5rem, 6vw, 6rem); align-items: start; }
+.about .sec-head__title { font-size: clamp(2.3rem, 4vw, 3.4rem); }
 .about__text { margin-top: 1.25rem; max-width: 54ch; font-size: 1.05rem; }
 .timeline { border-top: 1px solid var(--line-2); }
 .timeline li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; padding: 1.15rem 0; border-bottom: 1px solid var(--line); }

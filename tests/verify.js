@@ -167,6 +167,11 @@ async function desktopChecks(browser) {
   check('every image has alt + width + height', d.badImgs.length === 0, d.badImgs.join(', '));
   check('cards stack on a 1440x900 desktop', d.stacking);
   await rollerWindowCheck(page, '1440px');
+  const aboutLines = await page.evaluate(() => {
+    const h = document.getElementById('about-title');
+    return h ? Math.round(h.getBoundingClientRect().height / parseFloat(getComputedStyle(h).lineHeight)) : -1;
+  });
+  check('about headline sits on two lines at 1440px', aboutLines === 2, `${aboutLines} lines`);
   check('header wordmark reads johnchrisley.dev', d.brand === 'johnchrisley.dev', d.brand);
 
   // Put card 2 halfway over card 1: card 1 should be easing back (0 < --p < 1).
