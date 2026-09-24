@@ -1,0 +1,294 @@
+#!/usr/bin/env node
+/* ================================================================
+   Site checks for johnchrisley.dev
+   Serves the repo with python3's http.server, drives headless Chromium
+   through Playwright, prints PASS/FAIL per check, exits 1 on any FAIL.
+
+   Run:  PLAYWRIGHT_MODULE=/abs/path/to/node_modules/playwright node tests/verify.js
+   Flags: --no-external   skip live checks of outbound links
+          --shots <dir>   save desktop + mobile screenshots for review
+   ================================================================ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { spawn } = require('child_process');
+const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+
+const ROOT = path.resolve(__dirname, '..');
+const PORT = 8123;
+const BASE = `http://127.0.0.1:${PORT}/`;
+const argv = process.argv.slice(2);
+const SKIP_EXTERNAL = argv.includes('--no-external');
+const SHOTS = argv.includes('--shots') ? path.resolve(argv[argv.indexOf('--shots') + 1]) : null;
+
+const DESKTOP = { width: 1440, height: 900 };
+const SHORT = { width: 1440, height: 600 };
+const MOBILE = { width: 390, height: 844 };
+const TINY = { width: 320, height: 640 };
+
+const WORDS = ['parts shop.', 'grocery.', 'salon.', 'clinic.', 'restaurant.', 'parts shop.'];
+const CASES = ['EGMC Motorparts POS', 'PisoFolio', 'J&J Grocery POS', 'AI Video Pipeline'];
+
+const results = [];
+const check = (name, ok, detail = '') => results.push({ name, ok: Boolean(ok), detail: String(detail) });
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
+const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
+
+/* ---------- server ---------- */
+function startServer() {
+  return spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'], { cwd: ROOT, stdio: 'ignore' });
+}
+async function waitForServer() {
+  for (let i = 0; i < 60; i++) {
+    try { if ((await fetch(BASE)).ok) return; } catch { /* not up yet */ }
+    await sleep(100);
+  }
+  throw new Error(`server did not start on ${BASE}`);
+}
+
+/* ---------- helpers ---------- */
+async function open(browser, { viewport = DESKTOP, reducedMotion = 'no-preference', blockScript = false } = {}) {
+  const context = await browser.newContext({ viewport, reducedMotion });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  page.on('pageerror', (e) => errors.push(e.message));
+  if (blockScript) await page.route('**/script.js*', (route) => route.abort());
+  await page.goto(BASE, { waitUntil: 'load' });
+  await sleep(300);
+  return { context, page, errors };
+}
+
+// Scroll top to bottom in steps so every reveal and lazy image fires.
+async function scrollThrough(page) {
+  await page.evaluate(async () => {
+    const step = Math.round(window.innerHeight * 0.7);
+    for (let y = 0; y <= document.documentElement.scrollHeight; y += step) {
+      window.scrollTo({ top: y, behavior: 'instant' });
+      await new Promise((r) => setTimeout(r, 120));
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+  await sleep(1200);
+}
+
+async function screenshots(page, label) {
+  fs.mkdirSync(SHOTS, { recursive: true });
+  for (const id of ['hero', 'work', 'services', 'about', 'contact']) {
+    await page.evaluate((sel) => document.getElementById(sel)?.scrollIntoView({ behavior: 'instant', block: 'start' }), id);
+    await sleep(700);
+    await page.screenshot({ path: path.join(SHOTS, `${label}-${id}.png`) });
+  }
+  // Mid-stack frame: the third card arriving over the second.
+  await page.evaluate(async () => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 100));
+    const c = document.querySelectorAll('.case')[2];
+    if (c) window.scrollTo({ top: c.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45, behavior: 'instant' });
+  });
+  await sleep(700);
+  await page.screenshot({ path: path.join(SHOTS, `${label}-stack.png`) });
+}
+
+/* ---------- 1 · file checks ---------- */
+function fileChecks() {
+  const html = read('index.html');
+  const jsBytes = fs.statSync(path.join(ROOT, 'script.js')).size;
+  check('script.js is under 8 KB', jsBytes < 8192, `${jsBytes} bytes`);
+  check('no third-party <script src>', !/<script[^>]*\ssrc=["']https?:/i.test(html));
+  check('motion.js is gone', !exists('motion.js'));
+  check('no link to dead roadmap subdomain', !html.includes('roadmap.johnchrisley.dev'));
+  check('grocery POS is not claimed live', !/in daily use/i.test(html));
+  check('internship reads May–Sep 2026', html.includes('May–Sep 2026'));
+  check('title names the freelance role', /<title>[^<]*Freelance Software Developer[^<]*<\/title>/.test(html));
+  check('og.html carries the new hook', read('og.html').includes('that runs your'));
+  const png = fs.readFileSync(path.join(ROOT, 'img/og.png'));
+  const w = png.readUInt32BE(16);
+  const h = png.readUInt32BE(20);
+  check('img/og.png is 1200x630', w === 1200 && h === 630, `${w}x${h}`);
+  check('sitemap lastmod is 2026-09-24', read('sitemap.xml').includes('<lastmod>2026-09-24</lastmod>'));
+  for (const name of ['egmc', 'pisofolio', 'grocery', 'video']) {
+    for (const size of [800, 1600]) check(`img/work/${name}-${size}.webp exists`, exists(`img/work/${name}-${size}.webp`));
+  }
+  const clutter = fs.readdirSync(ROOT).filter((n) => /^v\d.*\.png$/.test(n));
+  check('old root screenshots removed', clutter.length === 0, clutter.join(', '));
+  const ignore = exists('.gitignore') ? read('.gitignore') : '';
+  check('.gitignore covers scratch dirs', ['.superpowers/', '.playwright-mcp/', '.DS_Store'].every((p) => ignore.includes(p)));
+}
+
+/* ---------- 2 · desktop ---------- */
+async function desktopChecks(browser) {
+  const { context, page, errors } = await open(browser);
+
+  const firstLoadImageBytes = await page.evaluate(() => performance.getEntriesByType('resource')
+    .filter((e) => e.initiatorType === 'img').reduce((sum, e) => sum + e.transferSize, 0));
+  check('first-load image bytes < 150 KB', firstLoadImageBytes < 150 * 1024, `${Math.round(firstLoadImageBytes / 1024)} KB`);
+
+  const d = await page.evaluate(() => {
+    const texts = (sel) => [...document.querySelectorAll(sel)].map((e) => e.textContent.replace(/\s+/g, ' ').trim());
+    return {
+      h1: (document.querySelector('h1')?.textContent || '').replace(/\s+/g, ' ').trim(),
+      words: texts('.roller__track > span'),
+      missingSections: ['hero', 'work', 'services', 'about', 'contact'].filter((id) => !document.getElementById(id)),
+      cases: texts('.case .case__title'),
+      text: document.body.innerText,
+      deadAnchors: [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href'))
+        .filter((h) => h.length > 1 && !document.getElementById(h.slice(1))),
+      badImgs: [...document.images].filter((i) => !i.alt || !i.getAttribute('width') || !i.getAttribute('height'))
+        .map((i) => i.getAttribute('src')),
+      stacking: document.querySelector('.cases')?.classList.contains('is-stacking') || false,
+    };
+  });
+  check('h1 opens with the hook', d.h1.startsWith('I build the software that runs your'), d.h1.slice(0, 60));
+  check('roller lists the five business types', JSON.stringify(d.words) === JSON.stringify(WORDS), d.words.join(' | '));
+  check('hero/work/services/about/contact sections exist', d.missingSections.length === 0, d.missingSections.join(', '));
+  check('case studies in approved order', JSON.stringify(d.cases) === JSON.stringify(CASES), d.cases.join(' | '));
+  check('no em dash in visible copy', !d.text.includes('—'));
+  check('every #anchor resolves', d.deadAnchors.length === 0, d.deadAnchors.join(', '));
+  check('every image has alt + width + height', d.badImgs.length === 0, d.badImgs.join(', '));
+  check('cards stack on a 1440x900 desktop', d.stacking);
+
+  // Put card 2 halfway over card 1: card 1 should be easing back (0 < --p < 1).
+  const p = await page.evaluate(async () => {
+    const cards = [...document.querySelectorAll('.case')];
+    if (cards.length < 2 || !cards[0].firstElementChild) return -1;
+    const second = cards[1];
+    const stickTop = parseFloat(getComputedStyle(second).top) || 0;
+    const naturalTop = second.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: naturalTop - stickTop - cards[0].offsetHeight * 0.5, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 250));
+    return parseFloat(cards[0].firstElementChild.style.getPropertyValue('--p')) || 0;
+  });
+  check('covered card eases back while the next slides over', p > 0.2 && p < 0.8, `--p=${p}`);
+
+  const solid = await page.evaluate(() => document.getElementById('header')?.classList.contains('is-scrolled'));
+  check('header turns solid after scrolling', solid);
+
+  await scrollThrough(page);
+  const imgsLoaded = await page.evaluate(() => [...document.images].every((i) => i.complete && i.naturalWidth > 0));
+  check('all images load after a full scroll', imgsLoaded);
+  const external = await page.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="http"]')].map((a) => a.href))]);
+  check('no console or page errors (desktop)', errors.length === 0, errors.join(' / '));
+
+  if (SHOTS) await screenshots(page, 'desktop');
+  await context.close();
+  return external;
+}
+
+/* ---------- 3 · short desktop ---------- */
+async function shortDesktopCheck(browser) {
+  const { context, page } = await open(browser, { viewport: SHORT });
+  const stacking = await page.evaluate(() => document.querySelector('.cases')?.classList.contains('is-stacking'));
+  check('no stacking when a card is taller than the screen (1440x600)', stacking === false);
+  await context.close();
+}
+
+/* ---------- 4 · mobile ---------- */
+async function mobileChecks(browser) {
+  for (const viewport of [MOBILE, TINY]) {
+    const { context, page, errors } = await open(browser, { viewport });
+    await scrollThrough(page);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    check(`no horizontal scroll at ${viewport.width}px`, overflow <= 0, `${overflow}px over`);
+    const stacking = await page.evaluate(() => document.querySelector('.cases')?.classList.contains('is-stacking'));
+    check(`cards are a plain list at ${viewport.width}px`, stacking === false);
+    check(`no console or page errors (${viewport.width}px)`, errors.length === 0, errors.join(' / '));
+
+    if (viewport === MOBILE) {
+      const state = () => page.evaluate(() => ({
+        hidden: document.getElementById('mobileMenu')?.hidden,
+        expanded: document.getElementById('menuToggle')?.getAttribute('aria-expanded'),
+        focus: document.activeElement?.id,
+        stacking: document.querySelector('.cases')?.classList.contains('is-stacking'),
+      }));
+      await page.click('#menuToggle');
+      const opened = await state();
+      check('menu opens from the toggle', opened.hidden === false && opened.expanded === 'true', JSON.stringify(opened));
+      await page.keyboard.press('Escape');
+      const closed = await state();
+      check('Escape closes the menu and returns focus', closed.hidden === true && closed.focus === 'menuToggle', JSON.stringify(closed));
+      await page.click('#menuToggle');
+      await page.setViewportSize(DESKTOP);
+      await sleep(500);
+      const wide = await state();
+      check('widening to desktop closes the menu', wide.hidden === true, JSON.stringify(wide));
+      check('widening to desktop turns stacking on', wide.stacking === true, JSON.stringify(wide));
+      if (SHOTS) {
+        await page.setViewportSize(MOBILE);
+        await sleep(400);
+        await screenshots(page, 'mobile');
+      }
+    }
+    await context.close();
+  }
+}
+
+/* ---------- 5 · reduced motion ---------- */
+async function reducedMotionChecks(browser) {
+  const { context, page } = await open(browser, { reducedMotion: 'reduce' });
+  const r = await page.evaluate(() => {
+    const track = document.querySelector('.roller__track');
+    return {
+      anim: track ? getComputedStyle(track).animationName : 'missing',
+      transform: track ? getComputedStyle(track).transform : 'missing',
+      stacking: document.querySelector('.cases')?.classList.contains('is-stacking'),
+      hidden: [...document.querySelectorAll('[data-reveal], [data-hero]')].filter((el) => getComputedStyle(el).opacity !== '1').length,
+    };
+  });
+  check('reduced motion: word rests on "parts shop."', r.anim === 'none' && r.transform === 'none', JSON.stringify(r));
+  check('reduced motion: cards are a plain list', r.stacking === false);
+  check('reduced motion: nothing waits to be revealed', r.hidden === 0, `${r.hidden} hidden`);
+  await context.close();
+}
+
+/* ---------- 6 · script blocked ---------- */
+async function noScriptFallbackCheck(browser) {
+  const { context, page } = await open(browser, { blockScript: true });
+  await sleep(3500);
+  const hidden = await page.evaluate(() => [...document.querySelectorAll('[data-reveal], [data-hero]')]
+    .filter((el) => getComputedStyle(el).opacity !== '1').length);
+  check('content shows even if script.js fails to load', hidden === 0, `${hidden} hidden`);
+  await context.close();
+}
+
+/* ---------- 7 · outbound links ---------- */
+async function externalChecks(urls) {
+  if (SKIP_EXTERNAL) { check('outbound links (skipped)', true); return; }
+  for (const url of urls) {
+    let status = -1;
+    try {
+      const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(15000), headers: { 'user-agent': 'Mozilla/5.0 (link check)' } });
+      status = res.status;
+    } catch { /* network error: status stays -1 */ }
+    const ok = (status >= 200 && status < 400) || (url.includes('linkedin.com') && status === 999);
+    check(`link ${url}`, ok, `status ${status}`);
+  }
+}
+
+/* ---------- run ---------- */
+(async () => {
+  const server = startServer();
+  let browser;
+  try {
+    await waitForServer();
+    try { fileChecks(); } catch (e) { check('file checks ran', false, e.message); }
+    browser = await chromium.launch();
+    const external = await desktopChecks(browser);
+    await shortDesktopCheck(browser);
+    await mobileChecks(browser);
+    await reducedMotionChecks(browser);
+    await noScriptFallbackCheck(browser);
+    await externalChecks(external);
+  } catch (e) {
+    check('verify.js ran to completion', false, e.stack || e.message);
+  } finally {
+    if (browser) await browser.close();
+    server.kill();
+  }
+  const failed = results.filter((r) => !r.ok);
+  for (const r of results) console.log(`${r.ok ? 'PASS' : 'FAIL'}  ${r.name}${!r.ok && r.detail ? `  (${r.detail})` : ''}`);
+  console.log(`\n${results.length - failed.length}/${results.length} checks passed`);
+  process.exit(failed.length ? 1 : 0);
+})();
