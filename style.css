@@ -221,19 +221,21 @@ strong { color: var(--ink); font-weight: 600; }
 .hero__line { display: block; }
 
 /* Rolling word. The sizer reserves the widest word so nothing reflows.
-   Items sit 0.4em apart so neighbours never peek into the clip window. */
+   The clip window starts at the word's own line (never above it, or the
+   outgoing word paints over the line above) and leaves room below for
+   descenders. Items sit 0.4em apart so neighbours never peek in. */
 .roller {
   --step: calc((var(--lh) + 0.4) * 1em);
   position: relative;
   display: inline-block;
-  padding: 0.12em 0 0.24em;
-  margin: -0.12em 0 -0.24em;
+  padding: 0 0 0.24em;
+  margin: 0 0 -0.24em;
   color: var(--accent-text);
   clip-path: inset(0 -0.3em);
 }
 .roller__sizer { visibility: hidden; }
 .roller__track {
-  position: absolute; top: 0.12em; left: 0;
+  position: absolute; top: 0; left: 0;
   display: flex; flex-direction: column; gap: 0.4em;
   animation: roll 12.5s var(--ease-io) 1.6s 3 both;
 }

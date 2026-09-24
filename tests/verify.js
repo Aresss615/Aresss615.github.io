@@ -92,6 +92,21 @@ async function screenshots(page, label) {
   await page.screenshot({ path: path.join(SHOTS, `${label}-stack.png`) });
 }
 
+// The roller's clip window must start at its own line box, never above it,
+// or the outgoing word paints over the line above mid-roll.
+async function rollerWindowCheck(page, label) {
+  const r = await page.evaluate(() => {
+    const roller = document.querySelector('.roller');
+    const sizer = document.querySelector('.roller__sizer');
+    if (!roller || !sizer) return null;
+    const lh = parseFloat(getComputedStyle(document.querySelector('.hero__title')).lineHeight);
+    const s = sizer.getBoundingClientRect();
+    const lineTop = s.top + (s.height - lh) / 2;
+    return { windowTop: roller.getBoundingClientRect().top, lineTop };
+  });
+  check(`rolling word stays inside its own line (${label})`, r && r.windowTop >= r.lineTop - 1, JSON.stringify(r));
+}
+
 /* ---------- 1 · file checks ---------- */
 function fileChecks() {
   const html = read('index.html');
@@ -151,6 +166,7 @@ async function desktopChecks(browser) {
   check('every #anchor resolves', d.deadAnchors.length === 0, d.deadAnchors.join(', '));
   check('every image has alt + width + height', d.badImgs.length === 0, d.badImgs.join(', '));
   check('cards stack on a 1440x900 desktop', d.stacking);
+  await rollerWindowCheck(page, '1440px');
   check('header wordmark reads johnchrisley.dev', d.brand === 'johnchrisley.dev', d.brand);
 
   // Put card 2 halfway over card 1: card 1 should be easing back (0 < --p < 1).
@@ -197,6 +213,7 @@ async function mobileChecks(browser) {
     check(`no horizontal scroll at ${viewport.width}px`, overflow <= 0, `${overflow}px over`);
     const stacking = await page.evaluate(() => document.querySelector('.cases')?.classList.contains('is-stacking'));
     check(`cards are a plain list at ${viewport.width}px`, stacking === false);
+    await rollerWindowCheck(page, `${viewport.width}px`);
     check(`no console or page errors (${viewport.width}px)`, errors.length === 0, errors.join(' / '));
 
     if (viewport === MOBILE) {
