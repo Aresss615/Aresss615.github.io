@@ -1,43 +1,22 @@
 /* ================================================================
    johnchrisley.dev · interactions (vanilla, no dependencies)
    Motion budget: transform + opacity only; nothing runs off-screen.
-   1 boot · 2 header · 3 mobile menu · 4 reveals · 5 roller
+   1 boot · 2 reveals · 3 header · 4 mobile menu · 5 roller
    6 counter · 7 card stack
    ================================================================ */
 (() => {
   'use strict';
-  window.__jc = true;
 
   const root = document.documentElement;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasIO = 'IntersectionObserver' in window;
+  // Older Safari only has MediaQueryList.addListener.
+  const onChange = (mq, fn) => (mq.addEventListener ? mq.addEventListener('change', fn) : mq.addListener(fn));
 
   /* 1 · boot: start the hero entrance on the next frame */
   requestAnimationFrame(() => root.classList.add('is-loaded'));
 
-  /* 2 · header: solid background once the page scrolls */
-  const header = document.getElementById('header');
-  const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
-  syncHeader();
-  window.addEventListener('scroll', syncHeader, { passive: true });
-
-  /* 3 · mobile menu */
-  const toggle = document.getElementById('menuToggle');
-  const menu = document.getElementById('mobileMenu');
-  const setMenu = (open) => {
-    menu.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    root.classList.toggle('menu-open', open);
-  };
-  toggle.addEventListener('click', () => setMenu(menu.hidden));
-  menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !menu.hidden) { setMenu(false); toggle.focus(); }
-  });
-  window.matchMedia('(min-width: 861px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
-
-  /* 4 · reveals: fade + rise once, then stop observing */
+  /* 2 · reveals: fade + rise once, then stop observing */
   const reveals = document.querySelectorAll('[data-reveal]');
   if (reduce || !hasIO) {
     reveals.forEach((el) => el.classList.add('is-in'));
@@ -51,6 +30,40 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     reveals.forEach((el) => io.observe(el));
   }
+
+  // Content can now reveal itself, so disarm the 3 s fallback in <head>.
+  // Anything that throws before this line leaves it armed and the page shows.
+  window.__jc = true;
+
+  /* 3 · header: solid background once the page scrolls */
+  const header = document.getElementById('header');
+  const syncHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+  syncHeader();
+  window.addEventListener('scroll', syncHeader, { passive: true });
+
+  /* 4 · mobile menu: the page behind goes inert so focus stays in the menu */
+  const toggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('mobileMenu');
+  const brand = document.querySelector('.brand');
+  const behind = ['.skip-link', 'main', '.footer'].map((sel) => document.querySelector(sel)).filter(Boolean);
+  const setMenu = (open) => {
+    menu.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    root.classList.toggle('menu-open', open);
+    behind.forEach((el) => { el.inert = open; });
+  };
+  toggle.addEventListener('click', () => setMenu(menu.hidden));
+  menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) { setMenu(false); toggle.focus(); }
+  });
+  onChange(window.matchMedia('(min-width: 861px)'), (e) => {
+    if (!e.matches || menu.hidden) return;
+    const hadFocus = menu.contains(document.activeElement);
+    setMenu(false);
+    if (hadFocus) brand.focus();
+  });
 
   /* 5 · roller: pause the rolling word while the hero is off-screen */
   const roller = document.querySelector('.roller');

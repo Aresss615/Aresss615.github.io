@@ -190,6 +190,58 @@ async function desktopChecks(browser) {
   const solid = await page.evaluate(() => document.getElementById('header')?.classList.contains('is-scrolled'));
   check('header turns solid after scrolling', solid);
 
+  // Park with every card stuck, focus the top card's link, then Shift+Tab back
+  // into a covered card: the newly focused link must be the thing on top.
+  await page.evaluate(async () => {
+    const cards = [...document.querySelectorAll('.case')];
+    const last = cards[cards.length - 1];
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 100));
+    const stickTop = parseFloat(getComputedStyle(last).top) || 0;
+    const naturalTop = last.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: naturalTop - stickTop + 10, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 300));
+    last.querySelector('a')?.focus();
+  });
+  await page.keyboard.press('Shift+Tab');
+  const hit = await page.evaluate(() => {
+    const a = document.activeElement;
+    const r = a.getBoundingClientRect();
+    const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    return { focused: (a.textContent || '').trim().slice(0, 30), onTop: Boolean(el) && (el === a || a.contains(el)) };
+  });
+  check('Shift+Tab in the stack lands on a visible link', hit.onTop, JSON.stringify(hit));
+
+  // Focus ring must reach 3:1 against whatever surface sits behind it.
+  const rings = await page.evaluate(() => {
+    const lum = (c) => {
+      const [r, g, b] = c.match(/[\d.]+/g).slice(0, 3).map(Number).map((v) => {
+        v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const bgOf = (el) => {
+      for (let n = el; n; n = n.parentElement) {
+        const c = getComputedStyle(n).backgroundColor;
+        if (c && c !== 'transparent' && !/rgba\(0, 0, 0, 0\)/.test(c)) return c;
+      }
+      return 'rgb(255, 255, 255)';
+    };
+    const sels = ['.hero .btn--line', '.case--paper .case__link', '.case--accent .case__link', '.case--forest .case__link',
+      'a.lab__card', '.services__cta .btn', '.contact__mail', '.contact__links a', '.footer a'];
+    return sels.map((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return { sel, ratio: 0, note: 'missing' };
+      el.focus({ preventScroll: true });
+      const L1 = lum(getComputedStyle(el).outlineColor);
+      const L2 = lum(bgOf(el.parentElement));
+      const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+      return { sel, ratio: Math.round(ratio * 100) / 100, fv: el.matches(':focus-visible') };
+    });
+  });
+  const weak = rings.filter((r) => !(r.ratio >= 3 && r.fv));
+  check('focus ring is at least 3:1 on every surface', weak.length === 0, JSON.stringify(weak));
+
   await scrollThrough(page);
   const imgsLoaded = await page.evaluate(() => [...document.images].every((i) => i.complete && i.naturalWidth > 0));
   check('all images load after a full scroll', imgsLoaded);
@@ -226,19 +278,33 @@ async function mobileChecks(browser) {
         hidden: document.getElementById('mobileMenu')?.hidden,
         expanded: document.getElementById('menuToggle')?.getAttribute('aria-expanded'),
         focus: document.activeElement?.id,
+        focusClass: document.activeElement?.className || '',
         stacking: document.querySelector('.cases')?.classList.contains('is-stacking'),
       }));
       await page.click('#menuToggle', { timeout: 5000 });
       const opened = await state();
       check('menu opens from the toggle', opened.hidden === false && opened.expanded === 'true', JSON.stringify(opened));
+      const trail = [];
+      for (let i = 0; i < 8; i++) {
+        await page.keyboard.press('Tab');
+        trail.push(await page.evaluate(() => {
+          const a = document.activeElement;
+          if (!a || a === document.body) return 'body';
+          return a.closest('#mobileMenu') ? 'menu' : a.closest('#header') ? 'header' : 'behind';
+        }));
+      }
+      check('Tab never lands behind the open menu', !trail.includes('behind'), trail.join(','));
+      await page.focus('#mobileMenu a');
       await page.keyboard.press('Escape');
       const closed = await state();
       check('Escape closes the menu and returns focus', closed.hidden === true && closed.focus === 'menuToggle', JSON.stringify(closed));
       await page.click('#menuToggle', { timeout: 5000 });
+      await page.focus('#mobileMenu a');
       await page.setViewportSize(DESKTOP);
       await sleep(500);
       const wide = await state();
       check('widening to desktop closes the menu', wide.hidden === true, JSON.stringify(wide));
+      check('widening moves focus out of the closed menu to the brand', /\bbrand\b/.test(wide.focusClass), JSON.stringify(wide));
       check('widening to desktop turns stacking on', wide.stacking === true, JSON.stringify(wide));
       if (SHOTS) {
         await page.setViewportSize(MOBILE);
@@ -276,6 +342,24 @@ async function noScriptFallbackCheck(browser) {
     .filter((el) => getComputedStyle(el).opacity !== '1').length);
   check('content shows even if script.js fails to load', hidden === 0, `${hidden} hidden`);
   await context.close();
+
+  // script.js loads but throws partway: content must still show.
+  const breakers = [
+    ['IntersectionObserver throws', () => { window.IntersectionObserver = function () { throw new Error('boom'); }; }],
+    ['MediaQueryList has no addEventListener', () => { Object.defineProperty(MediaQueryList.prototype, 'addEventListener', { value: undefined }); }],
+  ];
+  for (const [label, breakIt] of breakers) {
+    const ctx = await browser.newContext({ viewport: DESKTOP });
+    await ctx.addInitScript(breakIt);
+    const pg = await ctx.newPage();
+    await pg.goto(BASE, { waitUntil: 'load' });
+    await sleep(3500);
+    await scrollThrough(pg);
+    const stuck = await pg.evaluate(() => [...document.querySelectorAll('[data-reveal], [data-hero]')]
+      .filter((el) => getComputedStyle(el).opacity !== '1').length);
+    check(`content shows when ${label}`, stuck === 0, `${stuck} hidden`);
+    await ctx.close();
+  }
 }
 
 /* ---------- 7 · outbound links ---------- */
