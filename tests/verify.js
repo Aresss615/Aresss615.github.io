@@ -203,13 +203,13 @@ async function mobileChecks(browser) {
         focus: document.activeElement?.id,
         stacking: document.querySelector('.cases')?.classList.contains('is-stacking'),
       }));
-      await page.click('#menuToggle');
+      await page.click('#menuToggle', { timeout: 5000 });
       const opened = await state();
       check('menu opens from the toggle', opened.hidden === false && opened.expanded === 'true', JSON.stringify(opened));
       await page.keyboard.press('Escape');
       const closed = await state();
       check('Escape closes the menu and returns focus', closed.hidden === true && closed.focus === 'menuToggle', JSON.stringify(closed));
-      await page.click('#menuToggle');
+      await page.click('#menuToggle', { timeout: 5000 });
       await page.setViewportSize(DESKTOP);
       await sleep(500);
       const wide = await state();
@@ -275,12 +275,16 @@ async function externalChecks(urls) {
     await waitForServer();
     try { fileChecks(); } catch (e) { check('file checks ran', false, e.message); }
     browser = await chromium.launch();
-    const external = await desktopChecks(browser);
-    await shortDesktopCheck(browser);
-    await mobileChecks(browser);
-    await reducedMotionChecks(browser);
-    await noScriptFallbackCheck(browser);
-    await externalChecks(external);
+    // Each group runs on its own so one stuck interaction cannot hide later results.
+    const group = async (name, fn) => {
+      try { return await fn(); } catch (e) { check(`${name} ran to completion`, false, e.message.split('\n')[0]); return undefined; }
+    };
+    const external = (await group('desktop checks', () => desktopChecks(browser))) || [];
+    await group('short desktop check', () => shortDesktopCheck(browser));
+    await group('mobile checks', () => mobileChecks(browser));
+    await group('reduced motion checks', () => reducedMotionChecks(browser));
+    await group('script-blocked check', () => noScriptFallbackCheck(browser));
+    await group('outbound link checks', () => externalChecks(external));
   } catch (e) {
     check('verify.js ran to completion', false, e.stack || e.message);
   } finally {
