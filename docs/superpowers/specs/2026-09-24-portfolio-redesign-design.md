@@ -104,18 +104,22 @@ Everything else comes from `~/knowledge` (experience, projects, profile).
 
 - **No GSAP and no third-party JS.** Everything lives in one `script.js` (target < 8 KB).
 - **Rolling word:** CSS keyframes on `translateY` only. The visible H1 includes a
-  visually hidden "business." for screen readers; the roller is `aria-hidden`.
+  visually hidden "business." for screen readers; the roller is `aria-hidden`. It runs 3 loops (about 37 s),
+  then rests on "parts shop.", and pauses while off-screen.
 - **Hero entrance:** CSS staggered line-rise on load, keyed off a class set by script.
 - **Counter:** "229" ticks up once via IntersectionObserver plus a short
-  `requestAnimationFrame` loop (about 900 ms) that stops when done.
+  `requestAnimationFrame` loop (about 900 ms) that stops when done. The count starts as the proof strip fades in.
 - **Stacking cards:** each card is `position: sticky` with a stepped `top`. As the next
-  card slides over, the covered card scales to about 0.94 and fades slightly, using a
-  CSS scroll-driven animation (`animation-timeline: view()`) inside
-  `@supports`. Browsers without support get sticky stacking without the scale.
+  card slides over, the covered card scales to about 0.95 and dims slightly. One
+  rAF-throttled scroll handler (active only near the Work section) writes a `--p`
+  (0-1) custom property on the covered card; CSS turns it into `transform` and an
+  overlay `opacity`.
 - **Reveals:** an IntersectionObserver adds `.is-in`, and CSS transitions opacity and
   transform. Each element animates once, then is unobserved.
-- **Mobile (< 760px):** cards stay sticky but with smaller offsets, and screenshots
-  sit above the text.
+- **Stacking guard:** stacking turns on only at ≥ 761px wide AND only when every
+  card fits below its sticky offset; otherwise the cards are a normal list (a
+  sticky card taller than the screen would hide its own bottom). On mobile the
+  screenshot sits above the text.
 - **`prefers-reduced-motion: reduce`:** the word stays on "parts shop.", there is no
   entrance or reveal motion, the counter shows its final value, and cards sit in a
   normal list.

@@ -1,25 +1,30 @@
 # johnchrisley.dev
 
-Personal portfolio of **John Chrisley Delos Santos** — computer engineer.
+Portfolio of **John Chrisley Delos Santos**, freelance software developer (PH).
 
-"Signals" — a dark instrument-style design built from scratch. No framework,
-no build step: just hand-written HTML, CSS, and vanilla JavaScript, deployed
-on GitHub Pages.
+"Kinetic Editorial": light paper, giant display type, one orange accent. Hand-written
+HTML, CSS and vanilla JavaScript. No framework, no build step, no third-party scripts.
 
 ## Stack
-- Semantic HTML5
-- CSS custom-property design system (graphite + signal-amber)
-- Vanilla JS — IntersectionObserver reveals, scroll-linked rail, magnetic buttons
-- Fonts: Space Grotesk · Inter · JetBrains Mono
+- Semantic HTML5, one page (`index.html`)
+- CSS custom-property design system (`style.css`)
+- Vanilla JS (`script.js`, < 8 KB): IntersectionObserver reveals, rolling-word hook,
+  sticky stacking case cards. Transform and opacity only; honors `prefers-reduced-motion`.
+- Fonts: Bricolage Grotesque · Inter · JetBrains Mono
 
-## Highlights
-- Mobile-first and fully responsive
-- Accessible: skip link, focus-visible, semantic landmarks, `prefers-reduced-motion`
-- SEO: Open Graph, Twitter cards, JSON-LD `Person`, sitemap, canonical
-- Fast: optimized imagery (4.8 MB → 48 KB WebP), zero dependencies
+## Deploy
+Served from **hammok** (`nginx:alpine` in `/srv/apps/portfolio`) behind a Cloudflare
+tunnel. `hammok-deploy@portfolio.timer` pulls `main` from GitHub every minute, so
+`git push` is the deploy.
 
 ## Local preview
 ```bash
 python3 -m http.server 8000
 # open http://localhost:8000
+```
+
+## Checks
+```bash
+PLAYWRIGHT_MODULE=/path/to/node_modules/playwright node tests/verify.js           # full suite
+PLAYWRIGHT_MODULE=/path/to/node_modules/playwright node tests/verify.js --no-external --shots /tmp/shots
 ```
