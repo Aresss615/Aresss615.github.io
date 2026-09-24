@@ -104,6 +104,7 @@ function fileChecks() {
   check('internship reads May–Sep 2026', html.includes('May–Sep 2026'));
   check('title names the freelance role', /<title>[^<]*Freelance Software Developer[^<]*<\/title>/.test(html));
   check('og.html carries the new hook', read('og.html').includes('that runs your'));
+  check('og.html wordmark is lowercase johnchrisley.dev', read('og.html').includes('<span>johnchrisley<i>.dev</i></span>'));
   const png = fs.readFileSync(path.join(ROOT, 'img/og.png'));
   const w = png.readUInt32BE(16);
   const h = png.readUInt32BE(20);
@@ -139,6 +140,7 @@ async function desktopChecks(browser) {
       badImgs: [...document.images].filter((i) => !i.alt || !i.getAttribute('width') || !i.getAttribute('height'))
         .map((i) => i.getAttribute('src')),
       stacking: document.querySelector('.cases')?.classList.contains('is-stacking') || false,
+      brand: (document.querySelector('.brand')?.textContent || '').replace(/\s+/g, ''),
     };
   });
   check('h1 opens with the hook', d.h1.startsWith('I build the software that runs your'), d.h1.slice(0, 60));
@@ -149,6 +151,7 @@ async function desktopChecks(browser) {
   check('every #anchor resolves', d.deadAnchors.length === 0, d.deadAnchors.join(', '));
   check('every image has alt + width + height', d.badImgs.length === 0, d.badImgs.join(', '));
   check('cards stack on a 1440x900 desktop', d.stacking);
+  check('header wordmark reads johnchrisley.dev', d.brand === 'johnchrisley.dev', d.brand);
 
   // Put card 2 halfway over card 1: card 1 should be easing back (0 < --p < 1).
   const p = await page.evaluate(async () => {
