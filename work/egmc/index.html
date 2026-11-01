@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>EGMC Motorparts POS · Case study · John Chrisley Delos Santos</title>
+  <meta name="description" content="How I built and deployed a point-of-sale and inventory system for a motorcycle parts store: one search across name, brand, part number and bike fitment, remote reports for an owner in the US, and 229 automated tests." />
+  <meta name="author" content="John Chrisley E. Delos Santos" />
+  <meta name="theme-color" content="#F4F2EC" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://johnchrisley.dev/work/egmc/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://johnchrisley.dev/work/egmc/" />
+  <meta property="og:title" content="EGMC Motorparts POS · Case study" />
+  <meta property="og:description" content="A deployed point-of-sale and inventory system for a motorcycle parts store, built with Django, HTMX and MySQL and backed by 229 automated tests." />
+  <meta property="og:image" content="https://johnchrisley.dev/img/work/egmc-1600.webp" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="1000" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="EGMC Motorparts POS · Case study" />
+  <meta name="twitter:description" content="A deployed POS for a motorcycle parts store: Django, HTMX, MySQL, 229 automated tests." />
+  <meta name="twitter:image" content="https://johnchrisley.dev/img/work/egmc-1600.webp" />
+
+  <link rel="icon" type="image/svg+xml" href="/img/jc-logo.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css?v=kinetic2" />
+
+  <script>
+    document.documentElement.classList.add('js');
+    setTimeout(function () { if (!window.__jc) document.documentElement.classList.add('no-motion'); }, 3000);
+  </script>
+</head>
+<body>
+
+  <a href="#problem" class="skip-link">Skip to the case study</a>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="/" class="brand" aria-label="johnchrisley.dev, home">
+        <svg class="brand__mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="21" height="21" rx="6" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M15.5 6.5v6.2c0 2.3-1.5 3.6-3.7 3.6-1 0-1.9-.25-2.6-.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17 7.2A5.6 5.6 0 0 0 13.4 6 5.6 5.6 0 1 0 17 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+        <span>johnchrisley<span class="brand__dim">.dev</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#work">Work</a>
+        <a href="/#about">About</a>
+        <a href="/hire/">For employers</a>
+      </nav>
+      <a href="#contact" class="btn btn--ink btn--sm header__cta">Ask for a demo</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <nav aria-label="Mobile">
+      <a href="/#work">Work</a>
+      <a href="/#about">About</a>
+      <a href="/hire/">For employers</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn--accent">Ask for a demo</a>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="page-hero" aria-labelledby="cs-title">
+      <div class="container">
+        <a href="/#work" class="crumb" data-hero style="--d:0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          All work
+        </a>
+        <p class="case__kicker" data-hero style="--d:0; margin-top: 1.5rem"><b>01</b> Case study · Client · Deployed</p>
+        <h1 class="page-hero__title" id="cs-title" data-hero style="--d:1">EGMC Motorparts POS</h1>
+        <p class="page-hero__sub" data-hero style="--d:2">Point-of-sale and inventory for a motorcycle parts store with a repair shop. Cashiers find any part by name, brand, part number or the bike it fits, and the owner checks sales, stock and profit from the US.</p>
+
+        <dl class="facts" data-hero style="--d:3">
+          <div><dt>My role</dt><dd>Solo developer: scope, build, test, deploy</dd></div>
+          <!-- TODO: exact months. MVP was scoped in July 2026 and the system is live; add the go-live month. -->
+          <div><dt>Timeline</dt><dd>2026</dd></div>
+          <div><dt>Stack</dt><dd>Django · MySQL · HTMX · Tailwind</dd></div>
+          <div><dt>Status</dt><dd>Deployed in-store · 229 tests</dd></div>
+        </dl>
+
+        <figure class="case__shot cs-shot" data-reveal>
+          <img src="/img/work/egmc-800.webp" srcset="/img/work/egmc-800.webp 800w, /img/work/egmc-1600.webp 1600w" sizes="(max-width: 1240px) calc(100vw - 2 * clamp(1rem, 5vw, 3rem)), 1144px" width="1600" height="1000" decoding="async" alt="EGMC Motorparts New Sale screen: a parts search for battery above a cart with brake pads, a spark plug and a CVT belt" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 01 · PROBLEM -->
+    <section class="cs-sec" id="problem" aria-labelledby="problem-title">
+      <div class="container cs-sec__grid">
+        <div data-reveal>
+          <p class="tag">01 / The problem</p>
+          <h2 class="cs-sec__title" id="problem-title">A parts counter lives or dies on <em>lookup.</em></h2>
+        </div>
+        <div class="cs-text" data-reveal style="--d:1">
+          <p>Customers ask for a part in four different ways: by name, by brand, by part number, or just by the bike they ride. A cashier who has to guess which way to search keeps the line waiting.</p>
+          <p>The owner also lives in the US. The shop needed a way for him to see sales, stock and profit without being there, so the system had to serve the counter and a remote owner from the same data.</p>
+          <!-- TODO: one sentence on what the shop used before (paper, notebook, spreadsheet). -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · ARCHITECTURE -->
+    <section class="cs-sec" id="architecture" aria-labelledby="architecture-title">
+      <div class="container">
+        <div class="cs-sec__grid">
+          <div data-reveal>
+            <p class="tag">02 / Architecture</p>
+            <h2 class="cs-sec__title" id="architecture-title">One app for the counter and the <em>owner.</em></h2>
+          </div>
+          <div class="cs-text" data-reveal style="--d:1">
+            <p>A single Django app serves both the cashier and the owner. Pages render on the server, and HTMX handles the interactive parts of the counter screen, so there is no single-page-app build to maintain.</p>
+            <p>MySQL holds the parts, their bike fitment, stock and every sale. The app is hosted online, which is what lets the owner open it from the US.</p>
+            <!-- TODO: name the host (Railway, Render or other) and how deploys happen. -->
+          </div>
+        </div>
+
+        <ol class="flow" aria-label="System diagram" data-reveal>
+          <li class="flow__step">
+            <span class="flow__tag">Clients</span>
+            <span class="flow__name">Browser</span>
+            <ul>
+              <li>Cashier at the counter</li>
+              <li>Owner, remotely from the US</li>
+            </ul>
+          </li>
+          <li class="flow__step flow__step--core">
+            <span class="flow__tag">Server</span>
+            <span class="flow__name">Django app</span>
+            <ul>
+              <li>Server-rendered pages</li>
+              <li>HTMX for the counter screen</li>
+              <li>Sales, stock and profit reports</li>
+            </ul>
+          </li>
+          <li class="flow__step">
+            <span class="flow__tag">Data</span>
+            <span class="flow__name">MySQL</span>
+            <ul>
+              <li>Parts and bike fitment</li>
+              <li>Stock</li>
+              <li>Every sale</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 03 · HARD PROBLEMS -->
+    <section class="cs-sec" id="decisions" aria-labelledby="decisions-title">
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <p class="tag">03 / Hard problems</p>
+          <h2 class="cs-sec__title" id="decisions-title">What took the most <em>thought.</em></h2>
+        </header>
+
+        <ol class="problems">
+          <li class="problem" data-reveal style="--d:0">
+            <span class="offer__num">01</span>
+            <h3>Search the way customers ask</h3>
+            <p>One search box covers name, brand, part number and bike fitment, so the cashier never has to choose a search mode. A customer who only knows their bike still gets an answer.</p>
+            <!-- TODO: add one detail of how ranking or matching works (e.g. exact part number first). -->
+          </li>
+          <li class="problem" data-reveal style="--d:1">
+            <span class="offer__num">02</span>
+            <h3>An owner in another country</h3>
+            <p>Sales, stock and profit reports live in the same app as the counter, so the numbers the owner sees from the US are the sales the cashier just rang up.</p>
+          </li>
+          <li class="problem" data-reveal style="--d:2">
+            <span class="offer__num">03</span>
+            <h3>Tested like it handles real money</h3>
+            <p>The system runs a live store, where a wrong total or a stock count that drifts costs real money. The build carries 229 automated tests to keep changes from breaking what already works.</p>
+            <!-- TODO: say what the tests cover (sales math, stock movement, permissions). -->
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 04 · RESULT -->
+    <section class="cs-sec" id="result" aria-labelledby="result-title">
+      <div class="container cs-sec__grid">
+        <div data-reveal>
+          <p class="tag">04 / Result</p>
+          <h2 class="cs-sec__title" id="result-title">Running at the <em>counter.</em></h2>
+        </div>
+        <div class="cs-text" data-reveal style="--d:1">
+          <p>The system is deployed and running at the store’s counter, and it gives the owner his view of the shop from the US.</p>
+          <!-- TODO: add real numbers if available: parts in the catalog, sales per day, time saved per transaction. -->
+          <!-- TODO: demo video. Record a 2-minute walkthrough, upload it (YouTube unlisted or similar) and embed it here:
+          <figure class="case__shot cs-shot">
+            <iframe src="VIDEO_URL" title="EGMC Motorparts POS walkthrough" width="1600" height="900" loading="lazy" allowfullscreen style="display:block;width:100%;aspect-ratio:16/9;border:0"></iframe>
+          </figure>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <nav class="next-case" aria-label="Next case study">
+        <p class="tag">Next case study</p>
+        <a href="/work/jj-grocery/" class="next-case__link">J&amp;J Grocery POS
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </nav>
+    </div>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <p class="tag" data-reveal>Contact</p>
+        <h2 class="contact__title" id="contact-title" data-reveal>Want the full<br /><em>demo?</em></h2>
+        <p class="contact__sub" data-reveal>The code is a private client build, but I’m happy to walk you through the system on a call.</p>
+        <a class="contact__mail" href="mailto:johnchrisley4@gmail.com?subject=EGMC%20POS%20demo" data-reveal>johnchrisley4@gmail.com
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <ul class="contact__links" data-reveal>
+          <li><a href="/hire/">For employers</a></li>
+          <li><a href="https://github.com/Aresss615" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/johnchrisley" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2026 John Chrisley E. Delos Santos</span>
+      <span>Designed and built from scratch · no framework, no template</span>
+      <span><a href="https://github.com/Aresss615/Aresss615.github.io" target="_blank" rel="noopener">Source</a> · <a href="#top">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="/script.js?v=kinetic2" defer></script>
+</body>
+</html>

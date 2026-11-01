@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>J&amp;J Grocery POS · Case study · John Chrisley Delos Santos</title>
+  <meta name="description" content="How I am rebuilding my family grocery's point-of-sale system: barcode checkout, BIR-format receipts with VAT computed from VAT-inclusive prices, cash and GCash, and a double-entry journal behind every sale." />
+  <meta name="author" content="John Chrisley E. Delos Santos" />
+  <meta name="theme-color" content="#F4F2EC" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://johnchrisley.dev/work/jj-grocery/" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://johnchrisley.dev/work/jj-grocery/" />
+  <meta property="og:title" content="J&amp;J Grocery POS · Case study" />
+  <meta property="og:description" content="A grocery POS rebuilt in PHP 8 and MySQL: BIR-format receipts, 12% VAT, cash and GCash, and a double-entry journal behind every sale." />
+  <meta property="og:image" content="https://johnchrisley.dev/img/work/grocery-1600.webp" />
+  <meta property="og:image:width" content="1600" />
+  <meta property="og:image:height" content="1000" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="J&amp;J Grocery POS · Case study" />
+  <meta name="twitter:description" content="A grocery POS with BIR-format receipts, 12% VAT, cash and GCash, and a double-entry journal behind every sale." />
+  <meta name="twitter:image" content="https://johnchrisley.dev/img/work/grocery-1600.webp" />
+
+  <link rel="icon" type="image/svg+xml" href="/img/jc-logo.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css?v=kinetic2" />
+
+  <script>
+    document.documentElement.classList.add('js');
+    setTimeout(function () { if (!window.__jc) document.documentElement.classList.add('no-motion'); }, 3000);
+  </script>
+</head>
+<body>
+
+  <a href="#problem" class="skip-link">Skip to the case study</a>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="/" class="brand" aria-label="johnchrisley.dev, home">
+        <svg class="brand__mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="21" height="21" rx="6" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M15.5 6.5v6.2c0 2.3-1.5 3.6-3.7 3.6-1 0-1.9-.25-2.6-.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17 7.2A5.6 5.6 0 0 0 13.4 6 5.6 5.6 0 1 0 17 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+        <span>johnchrisley<span class="brand__dim">.dev</span></span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/#work">Work</a>
+        <a href="/#about">About</a>
+        <a href="/hire/">For employers</a>
+      </nav>
+      <a href="#contact" class="btn btn--ink btn--sm header__cta">Ask for a demo</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <nav aria-label="Mobile">
+      <a href="/#work">Work</a>
+      <a href="/#about">About</a>
+      <a href="/hire/">For employers</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="btn btn--accent">Ask for a demo</a>
+  </div>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="page-hero" aria-labelledby="cs-title">
+      <div class="container">
+        <a href="/#work" class="crumb" data-hero style="--d:0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          All work
+        </a>
+        <p class="case__kicker" data-hero style="--d:0; margin-top: 1.5rem"><b>03</b> Case study · Multi-branch · In testing</p>
+        <h1 class="page-hero__title" id="cs-title" data-hero style="--d:1">J&amp;J Grocery POS</h1>
+        <p class="page-hero__sub" data-hero style="--d:2">Checkout, inventory and books for my family’s grocery: barcode scanning, BIR-format receipts with 12% VAT, cash and GCash, and a double-entry journal behind every sale.</p>
+
+        <dl class="facts" data-hero style="--d:3">
+          <div><dt>My role</dt><dd>Solo developer, rebuilding the store’s existing system</dd></div>
+          <!-- TODO: exact months for the rebuild, and the planned rollout date. -->
+          <div><dt>Timeline</dt><dd>2026</dd></div>
+          <div><dt>Stack</dt><dd>PHP 8 · MySQL · JavaScript · PHPUnit</dd></div>
+          <div><dt>Status</dt><dd>In testing before rollout</dd></div>
+        </dl>
+
+        <figure class="case__shot cs-shot" data-reveal>
+          <img src="/img/work/grocery-800.webp" srcset="/img/work/grocery-800.webp 800w, /img/work/grocery-1600.webp 1600w" sizes="(max-width: 1240px) calc(100vw - 2 * clamp(1rem, 5vw, 3rem)), 1144px" width="1600" height="1000" decoding="async" alt="J&amp;J Grocery POS terminal: product grid and a five-item sale totalling 621 pesos with VAT" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 01 · PROBLEM -->
+    <section class="cs-sec" id="problem" aria-labelledby="problem-title">
+      <div class="container cs-sec__grid">
+        <div data-reveal>
+          <p class="tag">01 / The problem</p>
+          <h2 class="cs-sec__title" id="problem-title">A checkout that has to answer to the <em>BIR.</em></h2>
+        </div>
+        <div class="cs-text" data-reveal style="--d:1">
+          <p>I’ve kept the tech running at my family’s grocery since 2022, and the store already had a POS. This is a full rebuild of it.</p>
+          <p>A grocery checkout in the Philippines does more than take payment. Receipts must follow BIR format, VAT has to be right on every line, customers pay in cash or GCash, and the family needs books that actually balance across branches.</p>
+          <!-- TODO: one sentence on what was wrong with the old system that made a rebuild worth it. -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · ARCHITECTURE -->
+    <section class="cs-sec" id="architecture" aria-labelledby="architecture-title">
+      <div class="container">
+        <div class="cs-sec__grid">
+          <div data-reveal>
+            <p class="tag">02 / Architecture</p>
+            <h2 class="cs-sec__title" id="architecture-title">Every sale lands in the <em>books.</em></h2>
+          </div>
+          <div class="cs-text" data-reveal style="--d:1">
+            <p>The terminal runs in a browser with a barcode scanner. A PHP 8 backend handles checkout, inventory and receipts, and posts a journal entry for every sale. MySQL stores products, stock, sales and the journal entries.</p>
+            <!-- TODO: describe how branches connect (one shared database, or one per branch that syncs). -->
+          </div>
+        </div>
+
+        <ol class="flow" aria-label="System diagram" data-reveal>
+          <li class="flow__step">
+            <span class="flow__tag">Front</span>
+            <span class="flow__name">Checkout terminal</span>
+            <ul>
+              <li>Browser screen</li>
+              <li>Barcode scanner</li>
+              <li>Cash and GCash tender</li>
+            </ul>
+          </li>
+          <li class="flow__step flow__step--core">
+            <span class="flow__tag">Server</span>
+            <span class="flow__name">PHP 8 app</span>
+            <ul>
+              <li>Checkout and inventory</li>
+              <li>BIR-format receipts with VAT</li>
+              <li>Journal posting per sale</li>
+            </ul>
+          </li>
+          <li class="flow__step">
+            <span class="flow__tag">Data</span>
+            <span class="flow__name">MySQL</span>
+            <ul>
+              <li>Products and stock</li>
+              <li>Sales and receipts</li>
+              <li>Journal entries</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 03 · HARD PROBLEMS -->
+    <section class="cs-sec" id="decisions" aria-labelledby="decisions-title">
+      <div class="container">
+        <header class="sec-head" data-reveal>
+          <p class="tag">03 / Hard problems</p>
+          <h2 class="cs-sec__title" id="decisions-title">What took the most <em>thought.</em></h2>
+        </header>
+
+        <ol class="problems">
+          <li class="problem" data-reveal style="--d:0">
+            <span class="offer__num">01</span>
+            <h3>VAT that is already in the price</h3>
+            <p>Shelf prices in the store already include VAT, so the system can’t add 12% on top. It pulls the tax back out of each price instead:</p>
+            <code class="formula">VAT = price × 12 ÷ 112<br />₱112.00 → VAT ₱12.00, net ₱100.00</code>
+          </li>
+          <li class="problem" data-reveal style="--d:1">
+            <span class="offer__num">02</span>
+            <h3>A journal entry behind every sale</h3>
+            <p>Each sale posts a balanced double-entry journal entry, so every peso the terminal takes in has a matching entry in the books.</p>
+          </li>
+          <li class="problem" data-reveal style="--d:2">
+            <span class="offer__num">03</span>
+            <h3>Receipts the BIR will accept</h3>
+            <p>Every sale prints a receipt in BIR format with the VAT broken out, whether the customer paid in cash or GCash.</p>
+            <!-- TODO: confirm which of these shipped and add the ones that did: VAT and non-VAT toggle, three held carts, discounts, voids, refunds, X-Read and Z-Read reports, roles with category-level permissions. -->
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 04 · STATUS -->
+    <section class="cs-sec" id="result" aria-labelledby="result-title">
+      <div class="container cs-sec__grid">
+        <div data-reveal>
+          <p class="tag">04 / Status</p>
+          <h2 class="cs-sec__title" id="result-title">In testing before <em>rollout.</em></h2>
+        </div>
+        <div class="cs-text" data-reveal style="--d:1">
+          <p>The rebuild is covered by PHPUnit tests and is in testing before it replaces the store’s current system.</p>
+          <!-- TODO: number of PHPUnit tests, and the rollout date once it is live. -->
+          <!-- TODO: demo video. Record a 2-minute walkthrough and embed it here:
+          <figure class="case__shot cs-shot">
+            <iframe src="VIDEO_URL" title="J&amp;J Grocery POS walkthrough" width="1600" height="900" loading="lazy" allowfullscreen style="display:block;width:100%;aspect-ratio:16/9;border:0"></iframe>
+          </figure>
+          -->
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <nav class="next-case" aria-label="Next case study">
+        <p class="tag">Next case study</p>
+        <a href="/work/egmc/" class="next-case__link">EGMC Motorparts POS
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </nav>
+    </div>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <p class="tag" data-reveal>Contact</p>
+        <h2 class="contact__title" id="contact-title" data-reveal>Want the full<br /><em>demo?</em></h2>
+        <p class="contact__sub" data-reveal>The code is a private repo, but I’m happy to walk you through the system on a call.</p>
+        <a class="contact__mail" href="mailto:johnchrisley4@gmail.com?subject=J%26J%20Grocery%20POS%20demo" data-reveal>johnchrisley4@gmail.com
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <ul class="contact__links" data-reveal>
+          <li><a href="/hire/">For employers</a></li>
+          <li><a href="https://github.com/Aresss615" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/johnchrisley" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2026 John Chrisley E. Delos Santos</span>
+      <span>Designed and built from scratch · no framework, no template</span>
+      <span><a href="https://github.com/Aresss615/Aresss615.github.io" target="_blank" rel="noopener">Source</a> · <a href="#top">Back to top ↑</a></span>
+    </div>
+  </footer>
+
+  <script src="/script.js?v=kinetic2" defer></script>
+</body>
+</html>
