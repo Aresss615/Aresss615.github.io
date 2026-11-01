@@ -117,7 +117,7 @@ function fileChecks() {
   check('motion.js is gone', !exists('motion.js'));
   check('no link to dead roadmap subdomain', !html.includes('roadmap.johnchrisley.dev'));
   check('grocery POS is not claimed live', !/in daily use/i.test(html));
-  check('internship reads May–Sep 2026', html.includes('May–Sep 2026'));
+  check('internship reads May–Oct 2026', html.includes('May–Oct 2026'));
   check('title names the freelance role', /<title>[^<]*Freelance Software Developer[^<]*<\/title>/.test(html));
   check('og.html carries the new hook', read('og.html').includes('that runs your'));
   check('og.html wordmark is lowercase johnchrisley.dev', read('og.html').includes('<span>johnchrisley<i>.dev</i></span>'));
