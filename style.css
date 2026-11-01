@@ -4,7 +4,7 @@
    Motion budget: transform + opacity only.
    1 tokens · 2 base · 3 buttons · 4 header + menu · 5 hero · 6 proof
    7 sections · 8 work · 9 lab · 10 services · 11 about · 12 contact
-   13 footer · 14 reveal · 15 reduced motion
+   13 footer · 14 reveal · 15 reduced motion · 16 subpages
    ================================================================ */
 
 /* 1 · tokens ------------------------------------------------------ */
@@ -542,3 +542,148 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
   .status__dot::after { display: none; }
   .js [data-hero], .js [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* 16 · subpages: /hire and /work case studies ---------------------- */
+.nav a[aria-current="page"] { color: var(--ink); }
+.nav a[aria-current="page"]::after { transform: scaleX(1); }
+
+.page-hero { padding: calc(var(--header-h) + clamp(3rem, 9vh, 5.5rem)) 0 clamp(2.5rem, 6vw, 4rem); }
+.page-hero__title {
+  margin-top: clamp(1.1rem, 2.5vh, 1.6rem);
+  max-width: 17ch;
+  font-size: clamp(2.5rem, 6.2vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+.page-hero__sub { margin-top: 1.5rem; max-width: 56ch; font-size: clamp(1.02rem, 1.3vw, 1.15rem); }
+.page-hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+
+.crumb {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font: 500 0.74rem/1.4 var(--ff-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color 0.2s;
+}
+.crumb:hover { color: var(--ink); }
+.crumb svg { width: 1em; height: 1em; }
+
+/* Key facts under a case-study title: role, timeline, stack, status. */
+.facts {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem 2rem;
+  margin-top: clamp(2rem, 5vw, 3rem); padding-top: 1.5rem;
+  border-top: 1px solid var(--line-2);
+}
+.facts dt { font: 500 0.7rem/1.4 var(--ff-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+.facts dd { margin-top: 0.35rem; font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+@media (max-width: 760px) { .facts { grid-template-columns: 1fr 1fr; } }
+
+.cs-shot { margin-top: clamp(2.5rem, 6vw, 4rem); }
+
+/* Case-study sections: label column + text column. */
+.cs-sec { padding: clamp(3.5rem, 8vw, 6rem) 0; border-top: 1px solid var(--line); }
+.cs-sec__grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.5rem clamp(2rem, 6vw, 6rem); }
+.cs-sec__title { margin-top: 0.8rem; font-size: clamp(1.9rem, 3.6vw, 2.8rem); line-height: 1; letter-spacing: -0.04em; }
+.cs-text p { max-width: 62ch; }
+.cs-text p + p { margin-top: 1rem; }
+@media (max-width: 860px) { .cs-sec__grid { grid-template-columns: 1fr; } }
+
+/* Architecture diagram: plain boxes and connectors, no images. */
+.flow { display: flex; align-items: stretch; gap: 2.5rem; margin-top: clamp(2rem, 5vw, 3rem); }
+.flow__step {
+  position: relative; flex: 1;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  padding: 1.25rem 1.3rem;
+  border: 1px solid var(--line-2); border-radius: 16px;
+  background: var(--card);
+}
+.flow__step--core { background: var(--ink); border-color: var(--ink); color: #CFC9BD; }
+.flow__step--core .flow__name { color: #FFFFFF; }
+.flow__step--core .flow__tag { color: var(--ink-soft); }
+.flow__tag { font: 500 0.68rem/1.4 var(--ff-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+.flow__name { font: 700 1.2rem/1.15 var(--ff-display); letter-spacing: -0.02em; color: var(--ink); }
+.flow__step ul { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.88rem; }
+.flow__step + .flow__step::before {
+  content: ''; position: absolute; top: 50%; left: -2.5rem;
+  width: 2.5rem; height: 2px; background: var(--accent);
+}
+.flow__step + .flow__step::after {
+  content: ''; position: absolute; top: 50%; left: -9px;
+  width: 0; height: 0; margin-top: -5px;
+  border-block: 6px solid transparent; border-left: 8px solid var(--accent);
+}
+@media (max-width: 860px) {
+  .flow { flex-direction: column; gap: 2rem; }
+  .flow__step + .flow__step::before { top: -2rem; left: 50%; width: 2px; height: 2rem; }
+  .flow__step + .flow__step::after { top: -9px; left: 50%; margin: 0 0 0 -5px; border-block: 0; border-inline: 6px solid transparent; border-top: 8px solid var(--accent); }
+}
+
+/* Numbered hard problems. */
+.problems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: clamp(2rem, 5vw, 3rem); }
+.problem {
+  display: flex; flex-direction: column; gap: 0.75rem;
+  padding: clamp(1.4rem, 2.5vw, 1.9rem);
+  border: 1px solid var(--line); border-radius: 18px;
+  background: var(--card);
+}
+.problem h3 { margin-top: 0.4rem; font-size: 1.4rem; line-height: 1.05; letter-spacing: -0.03em; }
+.problem p { font-size: 0.95rem; }
+@media (max-width: 900px) { .problems { grid-template-columns: 1fr; } }
+
+.formula {
+  display: block; margin-top: 0.25rem; padding: 0.75rem 0.9rem;
+  border-radius: 10px; background: var(--ink); color: var(--paper);
+  font: 500 0.82rem/1.5 var(--ff-mono);
+  overflow-x: auto;
+}
+
+.ticks { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.25rem; }
+.ticks li { position: relative; padding-left: 1.4rem; max-width: 62ch; }
+.ticks li::before {
+  content: ''; position: absolute; left: 0; top: 0.62em;
+  width: 7px; height: 7px; border-radius: 2px; background: var(--accent);
+}
+
+/* Experience list on /hire. */
+.xp { margin-top: clamp(2.5rem, 5vw, 3.5rem); border-top: 1px solid var(--line-2); }
+.xp > li { display: grid; grid-template-columns: 10rem minmax(0, 1fr); gap: 0.5rem 2rem; padding: clamp(1.5rem, 3vw, 2.25rem) 0; border-bottom: 1px solid var(--line); }
+.xp__when { padding-top: 0.35rem; font: 500 0.74rem/1.6 var(--ff-mono); letter-spacing: 0.04em; color: var(--ink-3); }
+.xp__role { font-size: clamp(1.35rem, 2.4vw, 1.75rem); letter-spacing: -0.03em; line-height: 1.1; }
+.xp__org { margin-top: 0.35rem; font: 500 0.78rem/1.5 var(--ff-mono); letter-spacing: 0.02em; color: var(--ink-3); }
+.xp .ticks { margin-top: 1rem; }
+.xp .case__link { margin-top: 1.1rem; }
+@media (max-width: 620px) { .xp > li { grid-template-columns: 1fr; } }
+
+/* Project cards on /hire. */
+.projects { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+.proj {
+  display: flex; flex-direction: column;
+  padding: clamp(1.5rem, 2.6vw, 2.1rem);
+  border: 1px solid var(--line); border-radius: 18px;
+  background: var(--card);
+}
+.proj .case__kicker { color: var(--ink-3); }
+.proj__title { margin-top: 0.9rem; font-size: clamp(1.6rem, 2.6vw, 2.1rem); letter-spacing: -0.035em; }
+.proj__text { margin-top: 0.8rem; font-size: 0.96rem; }
+.proj .chips { color: var(--ink-2); }
+.proj .case__link { align-self: flex-start; margin-top: auto; color: var(--ink); }
+.proj .chips + .case__link { margin-top: 1.5rem; }
+@media (max-width: 860px) { .projects { grid-template-columns: 1fr; } }
+
+/* Skills on /hire. */
+.skills { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.5rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+.skills h3 { padding-bottom: 0.75rem; border-bottom: 1.5px solid var(--ink); font-size: 1.2rem; letter-spacing: -0.02em; }
+.skills .chips { margin-top: 1rem; color: var(--ink-2); }
+@media (max-width: 1000px) { .skills { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .skills { grid-template-columns: 1fr; } }
+
+/* Next-case link above the contact band. */
+.next-case { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.75rem 2rem; padding: clamp(2.5rem, 6vw, 4rem) 0; border-top: 1px solid var(--line); }
+.next-case__link { display: inline-flex; align-items: center; gap: 0.6rem; font: 800 clamp(1.7rem, 4vw, 3rem)/1 var(--ff-display); letter-spacing: -0.04em; color: var(--ink); }
+.next-case__link svg { width: 0.8em; height: 0.8em; color: var(--accent-text); transition: transform 0.3s var(--ease); }
+.next-case__link:hover svg { transform: translateX(6px); }
+
+.contact__note a { color: var(--paper); border-bottom: 1px solid var(--accent); transition: border-color 0.2s; }
+.contact__note a:hover { border-color: var(--paper); }
