@@ -9,6 +9,9 @@ johnchrisley.dev - Jc's personal portfolio, freelance-first. Current design is
 orange accent, rolling-word hook ("I build the software that runs your ___"),
 proof strip, sticky stacking case cards with real screenshots, services, about,
 contact. Spec: docs/superpowers/specs/2026-09-24-portfolio-redesign-design.md.
+Employer page `/hire/` (2026-11, for full-time roles; Singapore and remote) and
+case studies `/work/egmc/`, `/work/jj-grocery/` reuse the same header, tokens and
+script.js; their styles live in style.css section 16.
 
 ## Stack
 - Hand-written HTML5 + CSS custom properties + vanilla JS (`script.js`). No

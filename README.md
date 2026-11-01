@@ -6,7 +6,8 @@ Portfolio of **John Chrisley Delos Santos**, freelance software developer (PH).
 HTML, CSS and vanilla JavaScript. No framework, no build step, no third-party scripts.
 
 ## Stack
-- Semantic HTML5, one page (`index.html`)
+- Semantic HTML5: freelance home (`index.html`), employer page (`hire/`), and case
+  studies (`work/egmc/`, `work/jj-grocery/`) sharing one stylesheet and script
 - CSS custom-property design system (`style.css`)
 - Vanilla JS (`script.js`, < 8 KB): IntersectionObserver reveals, rolling-word hook,
   sticky stacking case cards. Transform and opacity only; honors `prefers-reduced-motion`.

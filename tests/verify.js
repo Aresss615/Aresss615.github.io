@@ -29,6 +29,7 @@ const TINY = { width: 320, height: 640 };
 
 const WORDS = ['parts shop.', 'grocery.', 'salon.', 'clinic.', 'restaurant.', 'parts shop.'];
 const CASES = ['EGMC Motorparts POS', 'PisoFolio', 'J&J Grocery POS', 'AI Video Pipeline'];
+const SUBPAGES = ['hire/', 'work/egmc/', 'work/jj-grocery/'];
 
 const results = [];
 const check = (name, ok, detail = '') => results.push({ name, ok: Boolean(ok), detail: String(detail) });
@@ -49,14 +50,14 @@ async function waitForServer() {
 }
 
 /* ---------- helpers ---------- */
-async function open(browser, { viewport = DESKTOP, reducedMotion = 'no-preference', blockScript = false } = {}) {
+async function open(browser, { viewport = DESKTOP, reducedMotion = 'no-preference', blockScript = false, path: rel = '' } = {}) {
   const context = await browser.newContext({ viewport, reducedMotion });
   const page = await context.newPage();
   const errors = [];
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('pageerror', (e) => errors.push(e.message));
   if (blockScript) await page.route('**/script.js*', (route) => route.abort());
-  await page.goto(BASE, { waitUntil: 'load' });
+  await page.goto(BASE + rel, { waitUntil: 'load' });
   await sleep(300);
   return { context, page, errors };
 }
@@ -132,6 +133,20 @@ function fileChecks() {
   check('old root screenshots removed', clutter.length === 0, clutter.join(', '));
   const ignore = exists('.gitignore') ? read('.gitignore') : '';
   check('.gitignore covers scratch dirs', ['.superpowers/', '.playwright-mcp/', '.DS_Store'].every((p) => ignore.includes(p)));
+
+  const sitemap = read('sitemap.xml');
+  for (const rel of SUBPAGES) {
+    check(`${rel}index.html exists`, exists(`${rel}index.html`));
+    check(`sitemap lists /${rel}`, sitemap.includes(`<loc>https://johnchrisley.dev/${rel}</loc>`));
+    if (!exists(`${rel}index.html`)) continue;
+    const sub = read(`${rel}index.html`);
+    check(`/${rel} has a canonical URL`, sub.includes(`<link rel="canonical" href="https://johnchrisley.dev/${rel}" />`));
+    check(`/${rel} has no third-party <script src>`, !/<script[^>]*\ssrc=["']https?:/i.test(sub));
+    check(`/${rel} links only public repos`, !/github\.com\/Aresss615\/(grocery-pos|egmc-motorparts|pisofolio)\b/i.test(sub));
+  }
+  check('homepage nav links to /hire/', /<nav class="nav"[^>]*>[\s\S]*?href="\/hire\/"[\s\S]*?<\/nav>/.test(html));
+  check('EGMC card links to its case study', html.includes('href="/work/egmc/" class="case__link"'));
+  check('J&J card links to its case study', html.includes('href="/work/jj-grocery/" class="case__link"'));
 }
 
 /* ---------- 2 · desktop ---------- */
@@ -362,7 +377,65 @@ async function noScriptFallbackCheck(browser) {
   }
 }
 
-/* ---------- 7 · outbound links ---------- */
+/* ---------- 7 · subpages: /hire and the case studies ---------- */
+async function subpageChecks(browser) {
+  const external = [];
+  for (const rel of SUBPAGES) {
+    const { context, page, errors } = await open(browser, { path: rel });
+    await scrollThrough(page);
+    const d = await page.evaluate(() => ({
+      h1: (document.querySelector('h1')?.textContent || '').replace(/\s+/g, ' ').trim(),
+      text: document.body.innerText,
+      deadAnchors: [...document.querySelectorAll('a[href^="#"]')].map((a) => a.getAttribute('href'))
+        .filter((h) => h.length > 1 && !document.getElementById(h.slice(1))),
+      internal: [...new Set([...document.querySelectorAll('a[href^="/"]')].map((a) => a.getAttribute('href')))],
+      badImgs: [...document.images].filter((i) => !i.alt || !i.getAttribute('width') || !i.getAttribute('height'))
+        .map((i) => i.getAttribute('src')),
+      imgsLoaded: [...document.images].every((i) => i.complete && i.naturalWidth > 0),
+      hidden: [...document.querySelectorAll('[data-reveal], [data-hero]')].filter((el) => getComputedStyle(el).opacity !== '1').length,
+      outbound: [...document.querySelectorAll('a[href^="http"]')].map((a) => a.href),
+    }));
+    external.push(...d.outbound);
+    check(`/${rel} has an h1`, d.h1.length > 0, d.h1);
+    check(`/${rel} has no em dash in visible copy`, !d.text.includes('—'));
+    check(`/${rel} every #anchor resolves`, d.deadAnchors.length === 0, d.deadAnchors.join(', '));
+    check(`/${rel} every image has alt + width + height`, d.badImgs.length === 0, d.badImgs.join(', '));
+    check(`/${rel} images load`, d.imgsLoaded);
+    check(`/${rel} nothing stays hidden after a full scroll`, d.hidden === 0, `${d.hidden} hidden`);
+    if (rel === 'hire/') {
+      check('/hire/ drops freelance quote language', !/\bquote\b/i.test(d.text));
+      check('/hire/ says where Jc wants to work', /Singapore/.test(d.text) && /Remote/i.test(d.text));
+    }
+    const dead = [];
+    for (const href of d.internal) {
+      const [p, hash] = href.split('#');
+      const res = await fetch(new URL(p, BASE));
+      if (!res.ok) { dead.push(`${href} (${res.status})`); continue; }
+      if (hash && !(await res.text()).includes(`id="${hash}"`)) dead.push(`${href} (no #${hash})`);
+    }
+    check(`/${rel} internal links resolve`, dead.length === 0, dead.join(', '));
+    check(`no console or page errors (/${rel})`, errors.length === 0, errors.join(' / '));
+    if (SHOTS) {
+      fs.mkdirSync(SHOTS, { recursive: true });
+      await page.screenshot({ path: path.join(SHOTS, `desktop-${rel.replace(/\//g, '_')}full.png`), fullPage: true });
+    }
+    await context.close();
+
+    for (const viewport of [MOBILE, TINY]) {
+      const m = await open(browser, { viewport, path: rel });
+      await scrollThrough(m.page);
+      const overflow = await m.page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      check(`/${rel} no horizontal scroll at ${viewport.width}px`, overflow <= 0, `${overflow}px over`);
+      if (SHOTS && viewport === MOBILE) {
+        await m.page.screenshot({ path: path.join(SHOTS, `mobile-${rel.replace(/\//g, '_')}full.png`), fullPage: true });
+      }
+      await m.context.close();
+    }
+  }
+  return [...new Set(external)];
+}
+
+/* ---------- 8 · outbound links ---------- */
 async function externalChecks(urls) {
   if (SKIP_EXTERNAL) { check('outbound links (skipped)', true); return; }
   for (const url of urls) {
@@ -393,7 +466,8 @@ async function externalChecks(urls) {
     await group('mobile checks', () => mobileChecks(browser));
     await group('reduced motion checks', () => reducedMotionChecks(browser));
     await group('script-blocked check', () => noScriptFallbackCheck(browser));
-    await group('outbound link checks', () => externalChecks(external));
+    const subExternal = (await group('subpage checks', () => subpageChecks(browser))) || [];
+    await group('outbound link checks', () => externalChecks([...new Set([...external, ...subExternal])]));
   } catch (e) {
     check('verify.js ran to completion', false, e.stack || e.message);
   } finally {
