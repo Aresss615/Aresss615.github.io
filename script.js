@@ -2,7 +2,7 @@
    johnchrisley.dev · interactions (vanilla, no dependencies)
    Motion budget: transform + opacity only; nothing runs off-screen.
    1 boot · 2 reveals · 3 header · 4 mobile menu · 5 roller
-   6 counter · 7 card stack
+   6 counter · 7 section spy · 8 copy email · 9 card stack
    ================================================================ */
 (() => {
   'use strict';
@@ -96,7 +96,36 @@
     document.querySelectorAll('[data-count]').forEach((el) => cio.observe(el));
   }
 
-  /* 7 · card stack: sticky cards, and the covered card eases back as the
+  /* 7 · section spy: underline the nav link of the section on screen */
+  const links = [...document.querySelectorAll('.nav a[href^="#"]')];
+  if (hasIO && links.length) {
+    const sio = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        for (const a of links) {
+          if (a.hash === '#' + entry.target.id) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        }
+      }
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main > section').forEach((sec) => sio.observe(sec));
+  }
+
+  /* 8 · copy email: only offered where the clipboard API works */
+  document.querySelectorAll('.copy').forEach((btn) => {
+    if (!navigator.clipboard) return;
+    const label = btn.textContent;
+    btn.hidden = false;
+    btn.setAttribute('aria-live', 'polite');
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.textContent = label; }, 2000);
+      }).catch(() => {});
+    });
+  });
+
+  /* 9 · card stack: sticky cards, and the covered card eases back as the
          next one slides over. Only when every card fits on screen, so no
          card can hide its own bottom under the next one. */
   const cases = document.querySelector('.cases');
