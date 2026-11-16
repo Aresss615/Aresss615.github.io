@@ -4,7 +4,7 @@
    Motion budget: transform + opacity only.
    1 tokens · 2 base · 3 buttons · 4 header + menu · 5 hero · 6 proof
    7 sections · 8 work · 9 lab · 10 services · 11 about · 12 contact
-   13 footer · 14 reveal · 15 reduced motion · 16 subpages
+   13 footer · 14 reveal · 15 reduced motion · 16 subpages · 17 print
    ================================================================ */
 
 /* 1 · tokens ------------------------------------------------------ */
@@ -493,14 +493,18 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
 .contact__mail svg { flex: none; width: 0.9em; height: 0.9em; transition: transform 0.3s var(--ease); }
 .contact__mail:hover svg { transform: translateX(6px); }
 .contact__links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.5rem; }
-.contact__links a {
+.contact__links a, .copy {
   display: inline-flex; padding: 0.7rem 1.1rem;
   border: 1px solid var(--ink-line); border-radius: 999px;
   font: 500 0.85rem var(--ff-mono);
   color: var(--paper);
   transition: border-color 0.25s;
 }
-.contact__links a:hover { border-color: var(--paper); }
+.contact__links a:hover, .copy:hover { border-color: var(--paper); }
+/* Copy-email button: script.js shows it when the clipboard API exists. */
+.copy { background: transparent; border-color: var(--accent); cursor: pointer; }
+.copy[hidden] { display: none; }
+.contact__links li:has(> [hidden]) { display: none; }
 .contact__note { margin-top: 1.5rem; font: 500 0.78rem var(--ff-mono); letter-spacing: 0.04em; color: var(--ink-soft); }
 
 /* 13 · footer ----------------------------------------------------- */
@@ -544,8 +548,8 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
 }
 
 /* 16 · subpages: /hire and /work case studies ---------------------- */
-.nav a[aria-current="page"] { color: var(--ink); }
-.nav a[aria-current="page"]::after { transform: scaleX(1); }
+.nav a[aria-current] { color: var(--ink); }
+.nav a[aria-current]::after { transform: scaleX(1); }
 
 .page-hero { padding: calc(var(--header-h) + clamp(3rem, 9vh, 5.5rem)) 0 clamp(2.5rem, 6vw, 4rem); }
 .page-hero__title {
@@ -664,6 +668,7 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
   border: 1px solid var(--line); border-radius: 18px;
   background: var(--card);
 }
+.proj__shot { margin-bottom: 1.5rem; }
 .proj .case__kicker { color: var(--ink-3); }
 .proj__title { margin-top: 0.9rem; font-size: clamp(1.6rem, 2.6vw, 2.1rem); letter-spacing: -0.035em; }
 .proj__text { margin-top: 0.8rem; font-size: 0.96rem; }
@@ -687,3 +692,53 @@ a.lab__card:hover { transform: translateY(-3px); border-color: var(--ink); }
 
 .contact__note a { color: var(--paper); border-bottom: 1px solid var(--accent); transition: border-color 0.2s; }
 .contact__note a:hover { border-color: var(--paper); }
+
+/* 17 · print: /hire and the case studies print as clean documents -- */
+@media print {
+  :root { --paper: #fff; --card: #fff; --sec-py: 1.75rem; }
+  html { scroll-padding-top: 0; }
+  body { font-size: 10.5pt; background: #fff; }
+  .header, .mobile-menu, .skip-link, .menu-toggle, .copy, .btn, .next-case, .footer a[href="#top"] { display: none !important; }
+  [data-hero], [data-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .status__dot::after, .roller__track { animation: none !important; }
+  .hero { min-height: 0; padding: 1rem 0 1.5rem; }
+  .page-hero { padding: 1rem 0 1.5rem; }
+  .hero__title, .page-hero__title { font-size: 30pt; }
+  .sec-head__title, .contact__title { font-size: 20pt; }
+  .cs-sec { padding: 1.5rem 0; }
+  .proof, .contact, .footer { background: #fff; color: var(--ink-2); }
+  .proof__big, .contact__title, .contact__mail, .contact__links a { color: var(--ink); }
+  .proof__label, .contact .tag, .contact__note, .footer { color: var(--ink-3); }
+  .proof { border-block: 1px solid var(--line-2); }
+  .proof__item, .contact__links a { border-color: var(--line-2); }
+  .contact { padding: 1.75rem 0 1rem; border-top: 1px solid var(--line-2); }
+  .contact__mail { font-size: 14pt; margin-top: 1rem; }
+  .contact__links { margin-top: 1rem; }
+  .contact__note a { color: var(--ink); }
+  .cases.is-stacking { gap: 1.25rem; padding-bottom: 0; }
+  .cases.is-stacking .case { position: static; }
+  .case__card { transform: none !important; box-shadow: none; }
+  .case__card::after { display: none; }
+  .xp > li, .proj, .case, .offer, .problem, .flow__step, .skills > div, .timeline li { break-inside: avoid; }
+  .tag, .sec-head, h2, h3 { break-after: avoid; }
+  .sec-head { break-inside: avoid; }
+  .case__shot { box-shadow: 0 0 0 1px var(--line-2); }
+  .proj__shot, .footer__inner > span:last-child { display: none; }
+  .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 1.25rem; }
+  .xp .case__link, .proj .case__link { display: block; border-bottom: 0; overflow-wrap: anywhere; }
+  .xp .case__link svg, .proj .case__link svg { display: none; }
+  .contact__links li:has(> .copy) { display: none; }
+  .xp, .skills { margin-top: 1.25rem; }
+  .xp > li { grid-template-columns: 7rem minmax(0, 1fr); padding: 0.9rem 0; }
+  .proj { padding: 1rem; }
+  .ticks { gap: 0.35rem; }
+  .ticks li { max-width: none; }
+  .ticks li::before, .chips li, .proof__big em { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .skills { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; }
+  .facts { margin-top: 1.25rem; padding-top: 1rem; }
+  .proof__grid { grid-template-columns: repeat(4, 1fr); }
+  .proof__item { padding: 0.9rem 1rem; border-top: 0 !important; }
+  /* Show where links go, since paper has no hover. */
+  .xp a[href^="/"]::after, .proj a[href^="/"]::after { content: ' (johnchrisley.dev' attr(href) ')'; font-weight: 400; }
+  .proj a[href^="http"]::after { content: ' (' attr(href) ')'; font-weight: 400; }
+}
