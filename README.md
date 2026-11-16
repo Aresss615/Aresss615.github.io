@@ -10,7 +10,7 @@ HTML, CSS and vanilla JavaScript. No framework, no build step, no third-party sc
   studies (`work/egmc/`, `work/jj-grocery/`) sharing one stylesheet and script
 - CSS custom-property design system (`style.css`)
 - Vanilla JS (`script.js`, < 8 KB): IntersectionObserver reveals, rolling-word hook,
-  sticky stacking case cards. Transform and opacity only; honors `prefers-reduced-motion`.
+  sticky stacking case cards, nav section highlight, copy-email button. Transform and opacity only; honors `prefers-reduced-motion`.
 - Fonts: Bricolage Grotesque · Inter · JetBrains Mono
 
 ## Deploy

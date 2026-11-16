@@ -125,7 +125,7 @@ function fileChecks() {
   const w = png.readUInt32BE(16);
   const h = png.readUInt32BE(20);
   check('img/og.png is 1200x630', w === 1200 && h === 630, `${w}x${h}`);
-  check('sitemap lastmod is 2026-09-24', read('sitemap.xml').includes('<lastmod>2026-09-24</lastmod>'));
+  check('sitemap lastmod is 2026-11-16', read('sitemap.xml').includes('<lastmod>2026-11-16</lastmod>'));
   for (const name of ['egmc', 'pisofolio', 'grocery', 'video']) {
     for (const size of [800, 1600]) check(`img/work/${name}-${size}.webp exists`, exists(`img/work/${name}-${size}.webp`));
   }
@@ -405,6 +405,36 @@ async function subpageChecks(browser) {
     if (rel === 'hire/') {
       check('/hire/ drops freelance quote language', !/\bquote\b/i.test(d.text));
       check('/hire/ says where Jc wants to work', /Singapore/.test(d.text) && /Remote/i.test(d.text));
+      const h = await page.evaluate(async () => {
+        const facts = [...document.querySelectorAll('.page-hero .facts dt')].map((dt) => dt.textContent);
+        const shots = document.querySelectorAll('.proj .proj__shot img').length;
+        const btn = document.querySelector('.copy');
+        const shown = btn && !btn.hidden && btn.getBoundingClientRect().width > 0;
+        let copied = '';
+        navigator.clipboard.writeText = (t) => { copied = t; return Promise.resolve(); };
+        btn.click();
+        await new Promise((r) => setTimeout(r, 50));
+        document.getElementById('projects').scrollIntoView({ behavior: 'instant' });
+        await new Promise((r) => setTimeout(r, 300));
+        const current = [...document.querySelectorAll('.nav a[aria-current]')].map((a) => a.getAttribute('href'));
+        document.getElementById('contact').scrollIntoView({ behavior: 'instant' });
+        await new Promise((r) => setTimeout(r, 300));
+        const after = document.querySelectorAll('.nav a[aria-current]').length;
+        return { facts, shots, shown, copied, label: btn.textContent, current, after };
+      });
+      check('/hire/ hero lists role, place, availability and stack', h.facts.length === 4, h.facts.join(' | '));
+      check('/hire/ every project card has a screenshot', h.shots === 4, `${h.shots} shots`);
+      check('/hire/ copy button copies the email', h.shown && h.copied === 'johnchrisley4@gmail.com' && h.label === 'Copied', JSON.stringify(h));
+      check('/hire/ nav marks the section on screen', JSON.stringify(h.current) === '["#projects"]' && h.after === 0, JSON.stringify([h.current, h.after]));
+      await page.emulateMedia({ media: 'print' });
+      const pr = await page.evaluate(() => ({
+        header: getComputedStyle(document.getElementById('header')).display,
+        hidden: [...document.querySelectorAll('[data-reveal], [data-hero]')].filter((el) => getComputedStyle(el).opacity !== '1').length,
+        contactBg: getComputedStyle(document.querySelector('.contact')).backgroundColor,
+      }));
+      check('/hire/ prints without header or dark bands', pr.header === 'none' && pr.hidden === 0 && pr.contactBg === 'rgb(255, 255, 255)', JSON.stringify(pr));
+      if (SHOTS) await page.pdf({ path: path.join(SHOTS, 'hire-print.pdf'), format: 'A4', margin: { top: '12mm', bottom: '12mm', left: '10mm', right: '10mm' } });
+      await page.emulateMedia({ media: 'screen' });
     }
     const dead = [];
     for (const href of d.internal) {

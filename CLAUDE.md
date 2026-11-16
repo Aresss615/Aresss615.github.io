@@ -12,6 +12,8 @@ contact. Spec: docs/superpowers/specs/2026-09-24-portfolio-redesign-design.md.
 Employer page `/hire/` (2026-11, for full-time roles; Singapore and remote) and
 case studies `/work/egmc/`, `/work/jj-grocery/` reuse the same header, tokens and
 script.js; their styles live in style.css section 16.
+`/hire/` doubles as a printable CV: style.css section 17 is the print sheet (no header,
+no dark bands, no screenshots), checked by tests/verify.js.
 
 ## Stack
 - Hand-written HTML5 + CSS custom properties + vanilla JS (`script.js`). No
@@ -32,7 +34,9 @@ script.js; their styles live in style.css section 16.
   no crowded hero. No em dashes in site copy.
 - Only link public repos (grocery-pos, egmc-motorparts, pisofolio are private).
 - Verify before claiming done: `PLAYWRIGHT_MODULE=<playwright path> node tests/verify.js`
-  (Playwright currently borrowed from ~/dev/projects/investment-sim-cutover-worktree/node_modules/playwright).
+  (Playwright currently borrowed from ~/dev/projects/investment-sim-cutover-worktree/node_modules/playwright;
+  on hammok there is no node, so run it in the mcr.microsoft.com/playwright:v1.48.0-noble container with
+  --network host and /srv/apps/auto-video/motion/node_modules mounted as /deps/node_modules).
 - Commits: one short imperative line, no AI attribution. Never push.
 
 ## Status
