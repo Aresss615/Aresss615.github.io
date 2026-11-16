@@ -28,7 +28,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600;700&amp;display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css?v=kinetic2" />
+  <link rel="stylesheet" href="/style.css?v=kinetic3" />
 
   <script>
     document.documentElement.classList.add('js');
@@ -96,8 +96,7 @@
         <p class="status" data-hero style="--d:0">
           <span class="status__dot" aria-hidden="true"></span>
           <span>Open to full-time roles</span>
-          <!-- TODO: confirm graduation month; "expected April 2027" comes from Jc's estimate on 2026-11-01. -->
-          <span class="status__dim">Singapore · Remote · Available after graduation, expected April 2027</span>
+          <span class="status__dim">Singapore · Remote</span>
         </p>
         <h1 class="page-hero__title" id="hire-title" data-hero style="--d:1">Junior software engineer with systems already in <em>production.</em></h1>
         <p class="page-hero__sub" data-hero style="--d:2">I’m Jc, a Computer Engineering student at Mariano Marcos State University, graduating in 2027. I work end to end: database, backend, the screen people use, and the deploy. The POS system I built runs a parts store today, backed by 229 automated tests.</p>
@@ -107,6 +106,13 @@
           </a>
           <a href="#contact" class="btn btn--line">Email me</a>
         </div>
+        <!-- TODO: confirm graduation month; "expected April 2027" comes from Jc's estimate on 2026-11-01. -->
+        <dl class="facts" data-hero style="--d:4">
+          <div><dt>Looking for</dt><dd>Full-time junior software engineer role</dd></div>
+          <div><dt>Where</dt><dd>Singapore or remote</dd></div>
+          <div><dt>Available</dt><dd>After graduation, expected April 2027</dd></div>
+          <div><dt>Core stack</dt><dd>Python, Django, JavaScript, MySQL</dd></div>
+        </dl>
       </div>
     </section>
 
@@ -147,10 +153,10 @@
               <h3 class="xp__role">Software Engineer Intern</h3>
               <p class="xp__org">Komunidad Global · climate-tech SaaS for enterprise ESG · Django</p>
               <ul class="ticks">
-                <li>Started on the Core QA team writing Jira test cases, one of which caught a Select All bug, then asked to move to development and joined the Legacy Dev team in week two.</li>
-                <li>Adapted an existing early-warning alert pipeline for a new client, and added a dry-run mode across SMS, email, Telegram and Facebook so alerts could be tested against real client data without reaching real recipients.</li>
-                <li>Built the Sensor Collection page in the company’s Django web app, and made map setup in shared JavaScript optional so maps only load when a page has one, which removed an off-screen map workaround.</li>
-                <li>GIS and weather data: split the IBTrACS global typhoon track dataset into yearly GeoJSON files from 1842 to 2026, planned 5 km coverage circles across NCR cities in QGIS, and encoded PAGASA cyclone bulletins and wind signals for the company site.</li>
+                <li><strong>QA to development in two weeks.</strong> Started on the Core QA team writing Jira test cases, one of which caught a Select All bug, then asked to move to development and joined the Legacy Dev team in week two.</li>
+                <li><strong>Safe testing for live alerts.</strong> Adapted an existing early-warning alert pipeline for a new client, and added a dry-run mode across SMS, email, Telegram and Facebook so alerts could be tested against real client data without reaching real recipients.</li>
+                <li><strong>Django feature work.</strong> Built the Sensor Collection page in the company’s Django web app, and made map setup in shared JavaScript optional so maps only load when a page has one, which removed an off-screen map workaround.</li>
+                <li><strong>GIS and weather data.</strong> Split the IBTrACS global typhoon track dataset into yearly GeoJSON files from 1842 to 2026, planned 5 km coverage circles across NCR cities in QGIS, and encoded PAGASA cyclone bulletins and wind signals for the company site.</li>
               </ul>
             </div>
           </li>
@@ -160,10 +166,10 @@
               <h3 class="xp__role">Freelance Developer</h3>
               <p class="xp__org">EGMC Motorparts · motorcycle parts store and repair shop</p>
               <ul class="ticks">
-                <li>Scoped, built and deployed the store’s point-of-sale and inventory system on my own: Django, HTMX and MySQL.</li>
-                <li>One search box finds any part by name, brand, part number or the bike it fits.</li>
-                <li>Remote reports let the owner, based in the US, check sales, stock and profit from anywhere.</li>
-                <li>229 automated tests on the build.</li>
+                <li><strong>Solo, end to end.</strong> Scoped, built and deployed the store’s point-of-sale and inventory system on my own: Django, HTMX and MySQL.</li>
+                <li><strong>Search.</strong> One search box finds any part by name, brand, part number or the bike it fits.</li>
+                <li><strong>Remote reports.</strong> The owner, based in the US, checks sales, stock and profit from anywhere.</li>
+                <li><strong>Tested.</strong> 229 automated tests on the build.</li>
               </ul>
               <a href="/work/egmc/" class="case__link">Read the case study
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -217,6 +223,9 @@
 
         <ul class="projects">
           <li class="proj" data-reveal style="--d:0">
+            <figure class="case__shot proj__shot">
+              <img src="/img/work/egmc-800.webp" srcset="/img/work/egmc-800.webp 800w, /img/work/egmc-1600.webp 1600w" sizes="(max-width: 860px) calc(100vw - 5rem), 540px" width="1600" height="1000" loading="lazy" decoding="async" alt="EGMC Motorparts New Sale screen: a parts search for battery above a cart with brake pads, a spark plug and a CVT belt" />
+            </figure>
             <p class="case__kicker"><b>01</b> Client · Deployed</p>
             <h3 class="proj__title">EGMC Motorparts POS</h3>
             <p class="proj__text">A parts counter needed one search across name, brand, part number and bike fitment, plus remote reports for an owner in the US. I built and deployed it solo, with 229 automated tests.</p>
@@ -226,6 +235,9 @@
             </a>
           </li>
           <li class="proj" data-reveal style="--d:1">
+            <figure class="case__shot proj__shot">
+              <img src="/img/work/grocery-800.webp" srcset="/img/work/grocery-800.webp 800w, /img/work/grocery-1600.webp 1600w" sizes="(max-width: 860px) calc(100vw - 5rem), 540px" width="1600" height="1000" loading="lazy" decoding="async" alt="J&amp;J Grocery POS terminal: product grid and a five-item sale totalling 621 pesos with VAT" />
+            </figure>
             <p class="case__kicker"><b>02</b> Multi-branch · In testing</p>
             <h3 class="proj__title">J&amp;J Grocery POS</h3>
             <p class="proj__text">My family’s grocery needed BIR-format receipts, VAT that is right on every line, and books that balance. I rebuilt the POS with a double-entry journal behind every sale.</p>
@@ -235,6 +247,9 @@
             </a>
           </li>
           <li class="proj" data-reveal style="--d:0">
+            <figure class="case__shot proj__shot">
+              <img src="/img/work/pisofolio-800.webp" srcset="/img/work/pisofolio-800.webp 800w, /img/work/pisofolio-1600.webp 1600w" sizes="(max-width: 860px) calc(100vw - 5rem), 540px" width="1600" height="1000" loading="lazy" decoding="async" alt="PisoFolio Radar board ranking long and short signals for AMD, NFLX, SOL, AAPL and more" />
+            </figure>
             <p class="case__kicker"><b>03</b> Live · AI</p>
             <h3 class="proj__title">PisoFolio</h3>
             <p class="proj__text">A paper-trading simulator in Philippine pesos with an AI investment buddy. A scheduled job collects market data every 30 minutes and ranks signals across crypto and US stocks.</p>
@@ -244,6 +259,9 @@
             </a>
           </li>
           <li class="proj" data-reveal style="--d:1">
+            <figure class="case__shot proj__shot">
+              <img src="/img/work/video-800.webp" srcset="/img/work/video-800.webp 800w, /img/work/video-1600.webp 1600w" sizes="(max-width: 860px) calc(100vw - 5rem), 540px" width="1600" height="1000" loading="lazy" decoding="async" alt="Video pipeline console: a story script beside a 9:16 phone preview with word-highlighted captions" />
+            </figure>
             <p class="case__kicker"><b>04</b> Open source · AI media</p>
             <h3 class="proj__title">AI Video Pipeline</h3>
             <p class="proj__text">I extended an open-source project into a local short-video studio: script, voice cloning, word-by-word captions and a 9:16 render, all on my own machine.</p>
@@ -299,6 +317,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
         <ul class="contact__links" data-reveal>
+          <li><button class="copy" type="button" data-copy="johnchrisley4@gmail.com" hidden>Copy email</button></li>
           <li><a href="https://drive.google.com/uc?export=download&amp;id=1K0SmSttcz0BwnOK9-gqVg9O5dzLa0S3p">Résumé ↓</a></li>
           <li><a href="https://github.com/Aresss615" target="_blank" rel="noopener">GitHub</a></li>
           <li><a href="https://www.linkedin.com/in/johnchrisley" target="_blank" rel="noopener">LinkedIn</a></li>
@@ -316,6 +335,6 @@
     </div>
   </footer>
 
-  <script src="/script.js?v=kinetic2" defer></script>
+  <script src="/script.js?v=kinetic3" defer></script>
 </body>
 </html>
